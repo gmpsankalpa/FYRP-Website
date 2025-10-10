@@ -1,0 +1,450 @@
+/* Navigation Bar Styles - Optimized for All Devices */
+
+/* CSS Variables for Navigation */
+:root {
+	--nav-bg: #08102a;
+	--nav-accent: #ffe066;
+	--nav-text: #e6e6e6;
+	--nav-height: 64px;
+	--nav-height-mobile: 56px;
+	--menu-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile Menu Toggle Button */
+.navToggle {
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 44px;
+	height: 44px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 8px;
+	position: relative;
+	z-index: 1001;
+	transition: var(--menu-transition);
+}
+
+.navToggle:focus {
+	outline: 2px solid var(--nav-accent);
+	outline-offset: 2px;
+}
+
+.navToggleIcon {
+	position: relative;
+	width: 28px;
+	height: 2px;
+	background: var(--nav-accent);
+	border-radius: 2px;
+	transition: var(--menu-transition);
+}
+
+.navToggleIcon::before,
+.navToggleIcon::after {
+	content: '';
+	position: absolute;
+	width: 28px;
+	height: 2px;
+	background: var(--nav-accent);
+	border-radius: 2px;
+	transition: var(--menu-transition);
+	left: 0;
+}
+
+.navToggleIcon::before {
+	top: -8px;
+}
+
+.navToggleIcon::after {
+	top: 8px;
+}
+
+/* Animated Hamburger to X */
+.navToggle.active .navToggleIcon {
+	background: transparent;
+}
+
+.navToggle.active .navToggleIcon::before {
+	top: 0;
+	transform: rotate(45deg);
+}
+
+.navToggle.active .navToggleIcon::after {
+	top: 0;
+	transform: rotate(-45deg);
+}
+
+.modernNav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: var(--nav-bg);
+	padding: 0 clamp(16px, 4vw, 32px);
+	height: var(--nav-height);
+	box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	width: 100%;
+	box-sizing: border-box;
+	transition: all 0.3s ease;
+}
+
+.navLogo {
+	display: flex;
+	align-items: center;
+	gap: clamp(8px, 2vw, 12px);
+	font-size: clamp(1.1rem, 3vw, 1.4rem);
+	color: var(--nav-accent);
+	font-weight: bold;
+	letter-spacing: 0.5px;
+	text-decoration: none;
+	white-space: nowrap;
+	overflow: hidden;
+	z-index: 1001;
+}
+
+.navLogo span {
+	display: inline-block;
+}
+
+.navLogo img {
+	background: #fff;
+	border-radius: 50%;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	width: clamp(32px, 6vw, 48px);
+	height: clamp(32px, 6vw, 48px);
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
+.navLinks {
+	list-style: none;
+	display: flex;
+	gap: clamp(12px, 3vw, 24px);
+	margin: 0;
+	padding: 0;
+	align-items: center;
+}
+
+.navLinks li {
+	margin: 0;
+}
+
+.navLinks li a {
+	color: var(--nav-text);
+	text-decoration: none;
+	font-weight: 500;
+	padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2.5vw, 18px);
+	border-radius: 6px;
+	transition: all 0.3s ease;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: clamp(0.9rem, 2vw, 1rem);
+	white-space: nowrap;
+	/* Improve touch targets */
+	min-height: 44px;
+	min-width: 44px;
+}
+
+.navLinks li a:hover,
+.navLinks li a:focus,
+.navLinks li a.active,
+.navLinks li a[aria-current="page"] {
+	background: var(--nav-accent);
+	color: var(--nav-bg);
+	outline: none;
+}
+
+.navLinks li a:focus-visible {
+	outline: 2px solid var(--nav-accent);
+	outline-offset: 2px;
+}
+
+/* Overlay for mobile menu */
+.navOverlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(4px);
+	z-index: 999;
+	opacity: 0;
+	transition: opacity var(--menu-transition);
+}
+
+.navOverlay.active {
+	opacity: 1;
+}
+
+/* Menu Header with Logo - Only visible in mobile menu */
+.navMenuHeader {
+	display: none;
+	border-bottom: 2px solid var(--nav-accent) !important;
+	padding-bottom: 16px !important;
+	margin-bottom: 8px !important;
+}
+
+.navMenuLogo {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 0 20px;
+	color: var(--nav-accent);
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.navMenuLogo img {
+	background: #fff;
+	border-radius: 50%;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+}
+
+.navMenuLogo span {
+	color: var(--nav-accent);
+	white-space: nowrap;
+}
+
+/* ========================================
+   RESPONSIVE NAVIGATION FOR MOBILE
+   ======================================== */
+
+/* Tablets and below - Show hamburger menu */
+@media (max-width: 768px) {
+	.modernNav {
+		height: var(--nav-height-mobile);
+		padding: 0 16px;
+	}
+	
+	.navToggle {
+		display: flex;
+	}
+	
+	.navOverlay {
+		display: block;
+		pointer-events: none;
+	}
+	
+	.navOverlay.active {
+		pointer-events: all;
+	}
+	
+	.navLinks {
+		position: fixed;
+		top: 0;
+		right: -100%;
+		width: min(300px, 80vw);
+		height: 100vh;
+		background: var(--nav-bg);
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		padding: 20px;
+		gap: 0;
+		box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+		transition: right var(--menu-transition);
+		overflow-y: auto;
+		z-index: 1000;
+	}
+	
+	.navLinks.active {
+		right: 0;
+	}
+	
+	/* Show menu header in mobile menu */
+	.navMenuHeader {
+		display: block !important;
+	}
+	
+	.navLinks li {
+		width: 100%;
+		border-bottom: 1px solid rgba(255, 224, 102, 0.1);
+	}
+	
+	.navLinks li a {
+		width: 100%;
+		padding: 16px 20px;
+		font-size: 1.1rem;
+		justify-content: flex-start;
+		border-radius: 0;
+		transition: all 0.2s ease;
+	}
+	
+	.navLinks li a:hover,
+	.navLinks li a:focus,
+	.navLinks li a.active {
+		background: rgba(255, 224, 102, 0.15);
+		padding-left: 30px;
+		border-radius: 0;
+	}
+	
+	.navLogo {
+		font-size: 1.1rem;
+		gap: 8px;
+	}
+}
+
+/* Mobile Devices */
+@media (max-width: 640px) {
+	.navLogo span {
+		font-size: 1rem;
+	}
+	
+	.navLinks {
+		width: min(280px, 85vw);
+		padding: 16px;
+	}
+	
+	.navMenuLogo {
+		font-size: 1.1rem;
+		padding: 0 16px;
+	}
+	
+	.navMenuLogo img {
+		width: 36px;
+		height: 36px;
+	}
+	
+	.navLinks li a {
+		font-size: 1rem;
+		padding: 14px 16px;
+	}
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+	.modernNav {
+		padding: 0 12px;
+		height: 52px;
+	}
+	
+	.navLogo span {
+		font-size: 0.95rem;
+	}
+	
+	.navLogo img {
+		width: 36px;
+		height: 36px;
+	}
+	
+	.navToggle {
+		width: 40px;
+		height: 40px;
+	}
+	
+	.navToggleIcon {
+		width: 24px;
+	}
+	
+	.navToggleIcon::before,
+	.navToggleIcon::after {
+		width: 24px;
+	}
+	
+	.navLinks {
+		width: min(260px, 90vw);
+		padding: 12px;
+	}
+	
+	.navMenuLogo {
+		font-size: 1rem;
+		padding: 0 14px;
+	}
+	
+	.navMenuLogo img {
+		width: 32px;
+		height: 32px;
+	}
+	
+	.navLinks li a {
+		font-size: 0.95rem;
+		padding: 12px 14px;
+	}
+}
+
+/* Very Small Screens */
+@media (max-width: 360px) {
+	.navLogo span {
+		display: none;
+	}
+	
+	.navLinks {
+		width: 100%;
+		right: -100%;
+	}
+	
+	.navLinks.active {
+		right: 0;
+	}
+}
+
+/* Landscape Orientation on Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+	.modernNav {
+		height: 48px;
+		padding: 0 16px;
+	}
+	
+	.navLogo {
+		font-size: 1rem;
+	}
+	
+	.navLinks {
+		padding: 60px 16px 16px;
+	}
+	
+	.navMenuLogo {
+		font-size: 0.95rem;
+	}
+	
+	.navLinks li a {
+		padding: 10px 16px;
+		font-size: 0.9rem;
+	}
+}
+
+/* Desktop - Keep normal navigation */
+@media (min-width: 769px) {
+	.navToggle,
+	.navOverlay {
+		display: none !important;
+	}
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.navLogo img {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.modernNav,
+	.navLinks,
+	.navLinks li a,
+	.navToggleIcon,
+	.navToggleIcon::before,
+	.navToggleIcon::after,
+	.navOverlay {
+		transition: none;
+	}
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+	.modernNav {
+		background: var(--nav-bg);
+	}
+}
