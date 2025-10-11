@@ -17,8 +17,18 @@ const Dashboard = () => {
             faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
             faLink.crossOrigin = 'anonymous';
             document.head.appendChild(faLink);
+            
+            // Load jsPDF library
+            const jsPdfScript = document.createElement('script');
+            jsPdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+            jsPdfScript.async = true;
+            document.head.appendChild(jsPdfScript);
+            
             return () => {
                 document.head.removeChild(faLink);
+                if (document.head.contains(jsPdfScript)) {
+                    document.head.removeChild(jsPdfScript);
+                }
             };
         }, []);
 
@@ -595,9 +605,8 @@ const Dashboard = () => {
             setWarnings([]);
             setNotificationCount(0);
             setShowNotificationModal(false); // Close modal after clearing
-            showToast('All warnings cleared');
         } catch (error) {
-            console.error('Clear Warnings Error:', error);
+            console.error('Clear Warnings Error:', error) ;
             showToast('Failed to clear warnings', 3000);
         }
     };
@@ -624,6 +633,376 @@ const Dashboard = () => {
         setTimeout(() => {
             toast.classList.remove('show');
         }, duration);
+    };
+
+    // Export CSV Function
+    const handleExportCSV = () => {
+        try {
+            // CSV Title and header
+            const title = 'Smart Energy Meter Dashboard Data Export';
+            const generated = `Generated: ${new Date().toLocaleString()}`;
+            const header = [
+                'Time',
+                'Voltage (V)',
+                'Current (A)',
+                'Power (W)',
+                'Power Factor',
+                'Voltage Status',
+                'System Status',
+                'Daily Usage (kWh)'
+            ];
+            
+            const csvRows = [
+                title,
+                generated,
+                '',
+                header.join(',')
+            ];
+
+            // Add data rows
+            for (let i = 0; i < chartData.timestamps.length; i++) {
+                const time = chartData.timestamps[i];
+                const voltage = chartData.voltage[i];
+                const current = chartData.current[i];
+                const power = chartData.power[i];
+                
+                // Calculate power factor for this row
+                let pf = '';
+                if (voltage && current) {
+                    pf = power && voltage * current ? (power / (voltage * current)).toFixed(2) : '';
+                }
+                
+                // Voltage status
+                let vStatus = '';
+                if (typeof voltage === 'number') {
+                    if (voltage < 200) vStatus = 'Low';
+                    else if (voltage > 250) vStatus = 'High';
+                    else vStatus = 'Normal';
+                }
+                
+                // System status (use latest value)
+                const sysStatus = systemStatus.isOn ? 'Online' : 'Offline';
+                
+                // Daily usage (use latest value)
+                const daily = statistics.dailyUsage;
+                
+                csvRows.push([
+                    time,
+                    voltage.toFixed(2),
+                    current.toFixed(2),
+                    power.toFixed(2),
+                    pf,
+                    vStatus,
+                    sysStatus,
+                    daily
+                ].join(','));
+            }
+
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `energy_data_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Data exported as CSV successfully');
+        } catch (error) {
+            console.error('Export CSV Error:', error);
+            showToast('Failed to export CSV', 3000);
+        }
+    };
+
+    // Export PDF Function
+    const handleExportPDF = async () => {
+        const { jsPDF } = window.jspdf || {};
+        if (!jsPDF) {
+            showToast('PDF library loading... Please try again', 3000);
+            return;
+        }
+
+        try {
+            showToast('Generating PDF report...');
+
+            const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 15;
+
+            // Brand colors
+            const primary = [10, 16, 38];
+            const accent = [255, 224, 102];
+            const lightBg = [248, 249, 250];
+
+            // --- Cover Page ---
+            doc.setFillColor(...primary);
+            doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+            // Load and add logo
+            try {
+                const logoImg = new Image();
+                logoImg.src = require('../assets/logo.png');
+                
+                await new Promise((resolve, reject) => {
+                    logoImg.onload = () => {
+                        const logoWidth = 40;
+                        const logoHeight = 60;
+                        const logoX = (pageWidth - logoWidth) / 2;
+                        const logoY = 40;
+                        
+                        doc.addImage(logoImg, 'PNG', logoX, logoY, logoWidth, logoHeight);
+                        resolve();
+                    };
+                    logoImg.onerror = () => {
+                        console.warn('Logo failed to load, skipping...');
+                        resolve(); // Continue without logo
+                    };
+                });
+            } catch (error) {
+                console.warn('Logo loading error:', error);
+                // Continue without logo
+            }
+
+            // Title
+            doc.setTextColor(...accent);
+            doc.setFontSize(24);
+            doc.setFont(undefined, 'bold');
+            doc.text('ENERGY MONITORING REPORT', pageWidth / 2, 115, { align: 'center' });
+
+            // Subtitle
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'normal');
+            doc.text('Smart Energy Meter Dashboard', pageWidth / 2, 130, { align: 'center' });
+
+            // Report details
+            doc.setFontSize(10);
+            const now = new Date();
+            doc.text(`Generated: ${now.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })} at ${now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            })}`, pageWidth / 2, 140, { align: 'center' });
+
+            // --- Executive Summary Page ---
+            doc.addPage();
+
+            // Header
+            doc.setFillColor(...primary);
+            doc.rect(0, 0, pageWidth, 20, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('EXECUTIVE SUMMARY', margin, 15);
+
+            // Summary content
+            let yPos = 35;
+            doc.setTextColor(...primary);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text('Key Performance Indicators', margin, yPos);
+
+            yPos += 16;
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(51, 51, 51);
+
+            const kpiData = [
+                ['Voltage', `${energyData.voltage.toFixed(2)} V`],
+                ['Current', `${energyData.current.toFixed(2)} A`],
+                ['Power', `${energyData.power.toFixed(2)} W`],
+                ['Daily Usage', `${statistics.dailyUsage} kWh`]
+            ];
+
+            const contentWidth = pageWidth - margin * 2;
+            const dividerX = margin + contentWidth / 2;
+            const columnInnerWidth = (contentWidth / 2) - 12;
+            const kpiRectH = 12;
+            const kpiRowSpacing = 16;
+
+            kpiData.forEach(([label, value], index) => {
+                const col = index % 2;
+                const row = Math.floor(index / 2);
+                const colLeft = col === 0 ? margin + 6 : dividerX + 6;
+                const x = colLeft;
+                const y = yPos + row * kpiRowSpacing;
+
+                doc.setFillColor(...lightBg);
+                doc.rect(x, y - (kpiRectH - 2), columnInnerWidth, kpiRectH, 'F');
+
+                doc.setTextColor(...primary);
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(9);
+                doc.text(label + ':', x + 4, y);
+
+                doc.setTextColor(51, 51, 51);
+                doc.setFont(undefined, 'normal');
+                doc.setFontSize(9);
+                const valueX = x + columnInnerWidth - 4;
+                doc.text(value, valueX, y, { align: 'right' });
+            });
+
+            yPos += 40;
+
+            // System Status
+            doc.setTextColor(...primary);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text('System Status', margin, yPos);
+
+            yPos += 7;
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(51, 51, 51);
+
+            const statusData = [
+                ['Overall Status', systemStatus.isOn ? 'Online' : 'Offline'],
+                ['Connection', systemStatus.connectionStatus],
+                ['Last Action', systemStatus.lastAction]
+            ];
+
+            statusData.forEach(([label, value]) => {
+                doc.text(`• ${label}: ${value}`, margin, yPos);
+                yPos += 5;
+            });
+
+            yPos += 8;
+
+            // Energy Statistics
+            doc.setTextColor(...primary);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text('Energy Statistics', margin, yPos);
+
+            yPos += 7;
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+
+            const statsData = [
+                ['Voltage Min', statistics.voltage.min === Infinity ? '0.00V' : `${statistics.voltage.min.toFixed(2)}V`],
+                ['Voltage Max', statistics.voltage.max === -Infinity ? '0.00V' : `${statistics.voltage.max.toFixed(2)}V`],
+                ['Voltage Avg', `${statistics.voltage.avg.toFixed(2)}V`],
+                ['Current Peak', `${statistics.current.peak.toFixed(2)}A`],
+                ['Current Avg', `${statistics.current.avg.toFixed(2)}A`],
+                ['Power Total', `${statistics.power.total.toFixed(2)}W`]
+            ];
+
+            statsData.forEach(([label, value], index) => {
+                const x = margin + (index % 2) * 90;
+                const y = yPos + Math.floor(index / 2) * 5;
+                doc.text(`${label}: ${value}`, x, y);
+            });
+
+            // --- Data Table Page ---
+            doc.addPage();
+
+            doc.setFillColor(...primary);
+            doc.rect(0, 0, pageWidth, 20, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('DETAILED MEASUREMENTS', margin, 15);
+
+            let dataY = 35;
+
+            // Table header
+            doc.setFillColor(16, 26, 58);
+            doc.rect(margin, dataY - 3, pageWidth - margin * 2, 6, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'bold');
+            
+            const headers = ['Time', 'Voltage (V)', 'Current (A)', 'Power (W)'];
+            headers.forEach((header, i) => {
+                doc.text(header, margin + (i * 45), dataY);
+            });
+
+            dataY += 8;
+
+            // Table data
+            doc.setTextColor(51, 51, 51);
+            doc.setFont(undefined, 'normal');
+            
+            chartData.timestamps.slice(0, 20).forEach((time, i) => {
+                doc.text(time, margin, dataY);
+                doc.text(chartData.voltage[i].toFixed(2), margin + 45, dataY);
+                doc.text(chartData.current[i].toFixed(2), margin + 90, dataY);
+                doc.text(chartData.power[i].toFixed(2), margin + 135, dataY);
+                dataY += 5;
+            });
+
+            // Add page numbers
+            const totalPages = doc.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setTextColor(102, 102, 102);
+                doc.setFontSize(7);
+                doc.text(
+                    `Page ${i} of ${totalPages} | Smart Energy Meter Report`,
+                    pageWidth / 2,
+                    pageHeight - 10,
+                    { align: 'center' }
+                );
+            }
+
+            // Save PDF
+            const fileName = `Energy_Report_${now.toISOString().split('T')[0]}.pdf`;
+            doc.save(fileName);
+
+            showToast('PDF report generated successfully!');
+
+        } catch (error) {
+            console.error('PDF Export Error:', error);
+            showToast('Failed to generate PDF: ' + error.message, 3000);
+        }
+    };
+
+    // Reset Data Function
+    const handleResetData = async () => {
+        const confirmReset = window.confirm(
+            'Are you sure you want to reset system configuration to default values?\n\n' +
+            'This will reset:\n' +
+            '• Low Voltage Threshold: 220V\n' +
+            '• High Voltage Threshold: 240V\n' +
+            '• Overcurrent Threshold: 10.0A\n' +
+            '• Power Threshold: 2400W\n' +
+            '• Buzzer: Enabled'
+        );
+
+        if (!confirmReset) return;
+
+        try {
+            showToast('Resetting system configuration...');
+
+            const systemStatusRef = doc(db, 'system_control', 'status');
+            
+            const DEFAULTS = {
+                lowVoltageThreshold: 220,
+                highVoltageThreshold: 240,
+                overcurrentThreshold: 10.0,
+                powerThreshold: 2400,
+                buzzerEnabled: true
+            };
+
+            await updateDoc(systemStatusRef, {
+                minVoltage: DEFAULTS.lowVoltageThreshold,
+                maxVoltage: DEFAULTS.highVoltageThreshold,
+                maxCurrent: DEFAULTS.overcurrentThreshold,
+                maxPower: DEFAULTS.powerThreshold,
+                Buzzer: DEFAULTS.buzzerEnabled,
+                updatedAt: new Date().toLocaleString()
+            });
+
+            showToast('System configuration reset to defaults successfully!');
+
+        } catch (error) {
+            console.error('Reset Data Error:', error);
+            showToast('Failed to reset system configuration: ' + error.message, 3000);
+        }
     };
 
     const voltageStatusInfo = getVoltageStatus(energyData.voltage);
@@ -665,19 +1044,30 @@ const Dashboard = () => {
                     comprehensive insights into key electrical parameters, allowing you to
                     track and optimize energy consumption.</p>
                     </div>
+                    <div className={styles.heroImage}>
+                        <img src={require('../assets/logo.png')} alt="Smart Meter Logo" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} onError={e => e.target.style.display = 'none'} />
+                    </div>
+                </section>
+
+                {/* Status Bar */}
+                <section className={styles.heroStatusBar}>
                     <div className={styles.heroStatus}>
-                        <div className={styles.statusIndicator}>
-                            <span className={`${styles.statusDot} ${systemStatus.isOn ? styles.active : ''}`}></span>
-                            <span>System {systemStatus.isOn ? 'Online' : 'Offline'}</span>
+                        <div className={styles.statusLeft}>
+                            <div className={`${styles.statusIndicator} ${systemStatus.isOn ? styles.online : styles.offline}`}>
+                                <span className={`${styles.statusDot} ${systemStatus.isOn ? styles.active : ''}`}></span>
+                                <span>System {systemStatus.isOn ? 'Online' : 'Offline'}</span>
+                            </div>
+                            <div className={styles.lastUpdate}>
+                                <i className="fas fa-clock"></i>
+                                <span>Updated {formatTime(lastUpdated)}</span>
+                            </div>
                         </div>
-                        <div className={styles.lastUpdate}>
-                            <i className="fas fa-clock"></i>
-                            <span>Last Update: {formatTime(lastUpdated)}</span>
+                        <div className={styles.statusRight}>
+                            <button className={styles.notificationIcon} onClick={() => setShowNotificationModal(true)} aria-label="View notifications">
+                                <i className="fas fa-bell"></i>
+                                {notificationCount > 0 && <span id="notification-count">{notificationCount}</span>}
+                            </button>
                         </div>
-                        <button className={styles.notificationIcon} onClick={() => setShowNotificationModal(true)}>
-                            <i className="fas fa-bell"></i>
-                            {notificationCount > 0 && <span id="notification-count">{notificationCount}</span>}
-                        </button>
                     </div>
                 </section>
 
@@ -849,7 +1239,7 @@ const Dashboard = () => {
                         {/* Voltage Chart */}
                         <div className={styles.chartContainer}>
                             <div className={styles.chartHeader}>
-                                <h3>Voltage Monitor</h3>
+                                <h3><i className="fas fa-bolt"></i> Voltage Monitor</h3>
                                 <div className={styles.chartStats}>
                                     <span>Min: <strong>{statistics.voltage.min === Infinity ? '0.00' : statistics.voltage.min.toFixed(2)}V</strong></span>
                                     <span>Max: <strong>{statistics.voltage.max === -Infinity ? '0.00' : statistics.voltage.max.toFixed(2)}V</strong></span>
@@ -864,7 +1254,7 @@ const Dashboard = () => {
                         {/* Current Chart */}
                         <div className={styles.chartContainer}>
                             <div className={styles.chartHeader}>
-                                <h3>Current Flow</h3>
+                                <h3><i className="fas fa-wave-square"></i> Current Flow</h3>
                                 <div className={styles.chartStats}>
                                     <span>Peak: <strong>{statistics.current.peak.toFixed(2)}A</strong></span>
                                     <span>Avg: <strong>{statistics.current.avg.toFixed(2)}A</strong></span>
@@ -878,7 +1268,7 @@ const Dashboard = () => {
                         {/* Power Chart */}
                         <div className={styles.chartContainer}>
                             <div className={styles.chartHeader}>
-                                <h3>Power Consumption</h3>
+                                <h3><i className="fas fa-plug"></i> Power Consumption</h3>
                                 <div className={styles.chartStats}>
                                     <span>Total: <strong>{statistics.power.total.toFixed(2)}W</strong></span>
                                     <span>Peak: <strong>{statistics.power.peak.toFixed(2)}W</strong></span>
@@ -892,7 +1282,11 @@ const Dashboard = () => {
                         {/* Combined Chart */}
                         <div className={`${styles.chartContainer} ${styles.fullWidth}`}>
                             <div className={styles.chartHeader}>
-                                <h3>Combined Analytics</h3>
+                                <h3><i className="fas fa-chart-line"></i> Combined Analytics Overview</h3>
+                                <div className={styles.chartStats}>
+                                    <span><i className="fas fa-chart-bar"></i> Real-time Data Visualization</span>
+                                    <span><i className="fas fa-sync-alt"></i> Auto-updating</span>
+                                </div>
                             </div>
                             <div className={styles.chartWrapper}>
                                 <canvas ref={combinedChartRef}></canvas>
@@ -912,11 +1306,11 @@ const Dashboard = () => {
                             <h3>Export Data</h3>
                             <p>Download your energy data in various formats</p>
                             <div className={styles.actionButtons}>
-                                <button className={`${styles.actionBtn} ${styles.primary}`}>
+                                <button className={`${styles.actionBtn} ${styles.primary}`} onClick={handleExportCSV}>
                                     <i className="fas fa-file-csv"></i>
                                     Export CSV
                                 </button>
-                                <button className={`${styles.actionBtn} ${styles.secondary}`}>
+                                <button className={`${styles.actionBtn} ${styles.secondary}`} onClick={handleExportPDF}>
                                     <i className="fas fa-file-pdf"></i>
                                     Export PDF
                                 </button>
@@ -948,11 +1342,11 @@ const Dashboard = () => {
                             <h3>System Tools</h3>
                             <p>Advanced system management options</p>
                             <div className={styles.actionButtons}>
-                                <button className={`${styles.actionBtn} ${styles.secondary}`}>
+                                <button className={`${styles.actionBtn} ${styles.secondary}`} onClick={() => navigate('/configure')}>
                                     <i className="fas fa-redo"></i>
-                                    Restart
+                                    Configure
                                 </button>
-                                <button className={`${styles.actionBtn} ${styles.danger}`}>
+                                <button className={`${styles.actionBtn} ${styles.danger}`} onClick={handleResetData}>
                                     <i className="fas fa-trash-alt"></i>
                                     Reset Data
                                 </button>
