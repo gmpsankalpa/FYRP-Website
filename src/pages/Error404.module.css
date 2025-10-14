@@ -1,0 +1,300 @@
+/* Modern CSS Variables for Consistent Design */
+:root {
+--primary-bg: #0a1026;
+--secondary-bg: #101a3a;
+--accent-color: #ffe066;
+--text-primary: #e6e6e6;
+--text-secondary: #b8b8b8;
+--card-bg: #101a3a;
+--card-shadow: 0 2px 16px #ffe06622;
+--card-hover-shadow: 0 8px 32px #ffe06655;
+--border-radius: 16px;
+--border-radius-lg: 18px;
+--transition: all 0.3s ease;
+--spacing-xs: 8px;
+--spacing-sm: 16px;
+--spacing-md: 24px;
+--spacing-lg: 32px;
+--spacing-xl: 40px;
+}
+
+/* Global Optimizations */
+* {
+box-sizing: border-box;
+}
+
+/* ========================================
+   404 Error Section
+   ======================================== */
+.errorSection {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+justify-content: center;
+background: linear-gradient(120deg, var(--secondary-bg) 60%, var(--accent-color) 120%);
+padding: clamp(3rem, 8vw, 5rem) var(--spacing-md);
+min-height: clamp(400px, 60vh, 600px);
+gap: clamp(2rem, 5vw, 4rem);
+position: relative;
+overflow: hidden;
+}
+
+.errorSection::after {
+content: '';
+position: absolute;
+top: -50%;
+right: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, rgba(255, 224, 102, 0.15) 0%, transparent 70%);
+animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+0% {
+transform: rotate(0deg);
+}
+100% {
+transform: rotate(360deg);
+}
+}
+
+.errorContent {
+flex: 1 1 400px;
+max-width: 600px;
+text-align: center;
+color: #fff;
+z-index: 1;
+}
+
+.errorIcon {
+font-size: clamp(3rem, 8vw, 5rem);
+color: var(--accent-color);
+margin-bottom: var(--spacing-md);
+animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+0%, 100% {
+transform: scale(1);
+opacity: 1;
+}
+50% {
+transform: scale(1.1);
+opacity: 0.8;
+}
+}
+
+.errorCode {
+font-size: clamp(5rem, 15vw, 10rem);
+font-weight: 900;
+margin: 0;
+line-height: 1;
+background: linear-gradient(45deg, var(--accent-color), #fff);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.errorTitle {
+font-size: clamp(1.8rem, 4vw, 2.5rem);
+font-weight: 700;
+margin: var(--spacing-md) 0;
+color: #fff;
+}
+
+.errorDesc {
+font-size: clamp(1rem, 2.5vw, 1.2rem);
+margin-bottom: var(--spacing-lg);
+color: var(--text-primary);
+line-height: 1.6;
+}
+
+.errorActions {
+display: flex;
+gap: var(--spacing-md);
+justify-content: center;
+flex-wrap: wrap;
+margin-top: var(--spacing-lg);
+}
+
+.homeBtn, .contactBtn {
+display: inline-flex;
+align-items: center;
+gap: var(--spacing-xs);
+padding: 14px 28px;
+font-size: 1.1rem;
+font-weight: 600;
+text-decoration: none;
+border-radius: 8px;
+transition: var(--transition);
+min-height: 44px;
+min-width: 44px;
+}
+
+.homeBtn {
+background: var(--accent-color);
+color: var(--secondary-bg);
+}
+
+.homeBtn:hover {
+background: #fff;
+color: var(--secondary-bg);
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(255, 224, 102, 0.4);
+}
+
+.contactBtn {
+background: transparent;
+color: #fff;
+border: 2px solid var(--accent-color);
+}
+
+.contactBtn:hover {
+background: var(--accent-color);
+color: var(--secondary-bg);
+transform: translateY(-2px);
+}
+
+/* Error Visual */
+.errorVisual {
+flex: 1 1 300px;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1;
+}
+
+.notFoundGraphic {
+position: relative;
+width: clamp(200px, 40vw, 350px);
+height: clamp(200px, 40vw, 350px);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.graphicCircle {
+position: absolute;
+width: 100%;
+height: 100%;
+border: 4px solid var(--accent-color);
+border-radius: 50%;
+animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+0% {
+transform: rotate(0deg);
+}
+100% {
+transform: rotate(360deg);
+}
+}
+
+.graphicText {
+font-size: clamp(4rem, 10vw, 6rem);
+font-weight: 900;
+color: var(--accent-color);
+opacity: 0.3;
+z-index: -1;
+}
+
+/* ========================================
+   Helpful Links Section
+   ======================================== */
+.helpfulLinks {
+padding: clamp(3rem, 6vw, 5rem) var(--spacing-md);
+text-align: center;
+background: var(--primary-bg);
+}
+
+.helpfulLinks h2 {
+font-size: clamp(1.8rem, 4vw, 2.5rem);
+font-weight: 700;
+margin-bottom: var(--spacing-xl);
+color: var(--text-primary);
+}
+
+.linksGrid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: var(--spacing-lg);
+max-width: 1200px;
+margin: 0 auto;
+}
+
+.linkCard {
+background: var(--card-bg);
+padding: var(--spacing-lg);
+border-radius: var(--border-radius);
+text-decoration: none;
+color: var(--text-primary);
+transition: var(--transition);
+box-shadow: var(--card-shadow);
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: 180px;
+}
+
+.linkCard:hover {
+transform: translateY(-8px);
+box-shadow: var(--card-hover-shadow);
+background: linear-gradient(135deg, var(--secondary-bg), var(--card-bg));
+}
+
+.linkCard i {
+font-size: 2.5rem;
+color: var(--accent-color);
+margin-bottom: var(--spacing-md);
+}
+
+.linkCard h3 {
+font-size: 1.3rem;
+font-weight: 700;
+margin-bottom: var(--spacing-sm);
+color: #fff;
+}
+
+.linkCard p {
+font-size: 1rem;
+color: var(--text-secondary);
+line-height: 1.5;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+@media (max-width: 768px) {
+.errorActions {
+flex-direction: column;
+align-items: stretch;
+}
+
+.homeBtn, .contactBtn {
+width: 100%;
+justify-content: center;
+}
+
+.linksGrid {
+grid-template-columns: 1fr;
+}
+}
+
+@media (max-width: 480px) {
+.errorCode {
+font-size: 4rem;
+}
+
+.errorTitle {
+font-size: 1.5rem;
+}
+
+.notFoundGraphic {
+width: 180px;
+height: 180px;
+}
+}
