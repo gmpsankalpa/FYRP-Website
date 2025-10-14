@@ -102,12 +102,15 @@
 	letter-spacing: 0.5px;
 	text-decoration: none;
 	white-space: nowrap;
-	overflow: hidden;
 	z-index: 1001;
+	flex: 1;
+	min-width: 0;
 }
 
 .navLogo span {
 	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .navLogo img {
@@ -164,6 +167,67 @@
 	outline-offset: 2px;
 }
 
+/* User Info & Logout Styles */
+.navDivider {
+	height: 1px;
+	background: rgba(255, 224, 102, 0.2);
+	margin: 12px 16px;
+}
+
+.navUserInfo {
+	padding: 0 !important;
+}
+
+.userEmail {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	color: var(--nav-accent);
+	font-size: 0.9rem;
+	font-weight: 500;
+	background: rgba(255, 224, 102, 0.1);
+	border-radius: 8px;
+	margin: 0 16px;
+}
+
+.userEmail i {
+	font-size: 1.2rem;
+}
+
+.logoutBtn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: calc(100% - 32px);
+	margin: 8px 16px;
+	padding: 10px 16px;
+	background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-align: center;
+}
+
+.logoutBtn:hover {
+	background: linear-gradient(135deg, #ee5a6f, #ff6b6b);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.logoutBtn:active {
+	transform: translateY(0);
+}
+
+.logoutBtn i {
+	font-size: 1.1rem;
+}
+
 /* Overlay for mobile menu */
 .navOverlay {
 	display: none;
@@ -187,18 +251,22 @@
 .navMenuHeader {
 	display: none;
 	border-bottom: 2px solid var(--nav-accent) !important;
-	padding-bottom: 16px !important;
+	padding: 16px 20px !important;
 	margin-bottom: 8px !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .navMenuLogo {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	padding: 0 20px;
 	color: var(--nav-accent);
 	font-weight: bold;
 	font-size: 1.2rem;
+	flex: 1;
+	min-width: 0;
 }
 
 .navMenuLogo img {
@@ -208,11 +276,71 @@
 	width: 40px;
 	height: 40px;
 	object-fit: contain;
+	flex-shrink: 0;
 }
 
 .navMenuLogo span {
 	color: var(--nav-accent);
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Menu Section Titles */
+.menuSectionTitle {
+	display: none;
+	padding: 12px 20px !important;
+	color: var(--nav-accent) !important;
+	font-size: 0.85rem !important;
+	font-weight: 700 !important;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	opacity: 0.9;
+	border-bottom: none !important;
+	margin-top: 8px;
+}
+
+.menuSectionTitle i {
+	margin-right: 8px;
+	font-size: 0.9rem;
+}
+
+/* Navigation Links with Icons */
+.navLinks li a i {
+	margin-right: 12px;
+	font-size: 1.1rem;
+	width: 20px;
+	text-align: center;
+	transition: all 0.3s ease;
+}
+
+.navLinks li a span {
+	flex: 1;
+}
+
+.navLinks li a:hover i,
+.navLinks li a.active i {
+	transform: scale(1.2);
+}
+
+/* Touch feedback effect */
+.navLinks li a:active {
+	transform: scale(0.98);
+	transition: transform 0.1s ease;
+}
+
+/* Active link indicator */
+.navLinks li a.active::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 4px;
+	height: 70%;
+	background: var(--nav-accent);
+	border-radius: 0 4px 4px 0;
+	display: none; /* Hidden by default, shown only on mobile */
 }
 
 /* ========================================
@@ -224,10 +352,22 @@
 	.modernNav {
 		height: var(--nav-height-mobile);
 		padding: 0 16px;
+		gap: 12px;
 	}
-	
+
+	/* Hide main navbar logo when menu is open */
+	.modernNav:has(.navLinks.active) .navLogo {
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.3s ease;
+	}
+
+	/* Keep toggle button visible */
 	.navToggle {
 		display: flex;
+		flex-shrink: 0;
+		opacity: 1 !important;
+		pointer-events: all !important;
 	}
 	
 	.navOverlay {
@@ -265,6 +405,11 @@
 	.navMenuHeader {
 		display: block !important;
 	}
+
+	/* Show section titles in mobile menu */
+	.menuSectionTitle {
+		display: block !important;
+	}
 	
 	.navLinks li {
 		width: 100%;
@@ -278,6 +423,7 @@
 		justify-content: flex-start;
 		border-radius: 0;
 		transition: all 0.2s ease;
+		position: relative;
 	}
 	
 	.navLinks li a:hover,
@@ -286,6 +432,24 @@
 		background: rgba(255, 224, 102, 0.15);
 		padding-left: 30px;
 		border-radius: 0;
+	}
+
+	/* Show active indicator on mobile */
+	.navLinks li a.active::before {
+		display: block;
+	}
+
+	/* Swipe indicator */
+	.navLinks::after {
+		content: 'Swipe right to close →';
+		display: block;
+		text-align: center;
+		padding: 20px;
+		color: rgba(255, 224, 102, 0.6);
+		font-size: 0.85rem;
+		font-style: italic;
+		margin-top: auto;
+		border-top: 1px solid rgba(255, 224, 102, 0.1);
 	}
 	
 	.navLogo {
@@ -296,6 +460,15 @@
 
 /* Mobile Devices */
 @media (max-width: 640px) {
+	.modernNav {
+		gap: 8px;
+	}
+
+	.navLogo {
+		font-size: 1rem;
+		gap: 8px;
+	}
+
 	.navLogo span {
 		font-size: 1rem;
 	}
@@ -305,9 +478,12 @@
 		padding: 16px;
 	}
 	
+	.navMenuHeader {
+		padding: 12px 16px !important;
+	}
+	
 	.navMenuLogo {
 		font-size: 1.1rem;
-		padding: 0 16px;
 	}
 	
 	.navMenuLogo img {
@@ -326,8 +502,14 @@
 	.modernNav {
 		padding: 0 12px;
 		height: 52px;
+		gap: 8px;
 	}
 	
+	.navLogo {
+		font-size: 0.95rem;
+		gap: 6px;
+	}
+
 	.navLogo span {
 		font-size: 0.95rem;
 	}
@@ -356,9 +538,12 @@
 		padding: 12px;
 	}
 	
+	.navMenuHeader {
+		padding: 10px 12px !important;
+	}
+	
 	.navMenuLogo {
 		font-size: 1rem;
-		padding: 0 14px;
 	}
 	
 	.navMenuLogo img {
@@ -374,8 +559,39 @@
 
 /* Very Small Screens */
 @media (max-width: 360px) {
+	.modernNav {
+		padding: 0 8px;
+		gap: 6px;
+	}
+
+	.navLogo {
+		font-size: 0.85rem;
+		gap: 6px;
+	}
+
 	.navLogo span {
-		display: none;
+		display: inline-block; /* Keep showing the name */
+		font-size: 0.85rem;
+		max-width: calc(100vw - 120px); /* Prevent overflow */
+	}
+
+	.navLogo img {
+		width: 32px;
+		height: 32px;
+	}
+
+	.navToggle {
+		width: 40px;
+		height: 40px;
+	}
+
+	.navToggleIcon {
+		width: 22px;
+	}
+
+	.navToggleIcon::before,
+	.navToggleIcon::after {
+		width: 22px;
 	}
 	
 	.navLinks {
@@ -419,6 +635,130 @@
 	.navOverlay {
 		display: none !important;
 	}
+
+	/* Hide mobile-only elements on desktop */
+	.menuSectionTitle {
+		display: none !important;
+	}
+
+	/* Hide menu header on desktop */
+	.navMenuHeader {
+		display: none !important;
+	}
+
+	/* Desktop navigation links - hide icons */
+	.navLinks li a i {
+		display: none;
+	}
+
+	/* Desktop active link styling - remove background, add bottom border */
+	.navLinks li a:hover,
+	.navLinks li a:focus,
+	.navLinks li a.active,
+	.navLinks li a[aria-current="page"] {
+		background: transparent;
+		color: var(--nav-accent);
+		border-bottom: 2px solid var(--nav-accent);
+		padding-bottom: calc(clamp(6px, 1.5vw, 8px) - 2px);
+		transform: translateY(-2px);
+	}
+
+	/* Desktop button animation effects */
+	.navLinks li a {
+		position: relative;
+		overflow: hidden;
+		border-bottom: 2px solid transparent;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Slide-in underline animation */
+	.navLinks li a::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: 0;
+		height: 2px;
+		background: var(--nav-accent);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transform: translateX(-50%);
+	}
+
+	.navLinks li a:hover::after {
+		width: 100%;
+	}
+
+	/* Active link - full width underline */
+	.navLinks li a.active::after,
+	.navLinks li a[aria-current="page"]::after {
+		width: 100%;
+	}
+
+	/* Shimmer effect on hover */
+	.navLinks li a::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 224, 102, 0.2),
+			transparent
+		);
+		transition: left 0.5s ease;
+	}
+
+	.navLinks li a:hover::before {
+		left: 100%;
+	}
+
+	/* Scale animation on click */
+	.navLinks li a:active {
+		transform: scale(0.95);
+		transition: transform 0.1s ease;
+	}
+
+	/* Hide quick links section on desktop */
+	.navLinks li:has(a[href="/faq"]),
+	.navLinks li:has(a[href="/help-center"]),
+	.navLinks li:has(a[href="/changelog"]),
+	.navLinks li:has(a[href="/source-code"]) {
+		display: none;
+	}
+
+	/* Hide divider before quick links on desktop */
+	.navDivider:first-of-type {
+		display: none;
+	}
+
+	/* Desktop logout button styling */
+	.navDivider {
+		height: 24px;
+		width: 1px;
+		background: rgba(255, 224, 102, 0.2);
+		margin: 0 12px;
+	}
+
+	.userEmail {
+		margin: 0;
+		padding: 8px 12px;
+		font-size: 0.85rem;
+		white-space: nowrap;
+	}
+
+	.logoutBtn {
+		width: auto;
+		margin: 0;
+		padding: 8px 16px;
+		font-size: 0.9rem;
+	}
+
+	.logoutBtn i {
+		display: inline-block;
+	}
 }
 
 /* High DPI Displays */
@@ -446,5 +786,59 @@
 @media (prefers-color-scheme: dark) {
 	.modernNav {
 		background: var(--nav-bg);
+	}
+}
+
+/* Toast Notification */
+.toast {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+	color: white;
+	padding: 1rem 1.5rem;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(255, 68, 68, 0.4);
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-weight: 500;
+	font-size: 1rem;
+	z-index: 10000;
+	animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s;
+	border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.toast i {
+	font-size: 1.3rem;
+}
+
+@keyframes slideInRight {
+	from {
+		transform: translateX(400px);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@media (max-width: 480px) {
+	.toast {
+		bottom: 20px;
+		right: 20px;
+		left: 20px;
+		padding: 0.875rem 1.25rem;
+		font-size: 0.95rem;
 	}
 }

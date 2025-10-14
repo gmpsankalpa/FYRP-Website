@@ -1,7 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './About.module.css';
+import usePageTitle from '../hooks/usePageTitle';
+import { SkeletonCard } from '../components/SkeletonLoader';
 
 const About = () => {
+  // Set page title
+  usePageTitle('About Us');
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
   useEffect(() => {
     // Load Font Awesome
     const faLink = document.createElement('link');
@@ -9,8 +16,15 @@ const About = () => {
     faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
     faLink.crossOrigin = 'anonymous';
     document.head.appendChild(faLink);
+    
+    // Set initial load to false after a short delay
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 800);
+    
     return () => {
       document.head.removeChild(faLink);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -43,6 +57,8 @@ const About = () => {
           <img 
             src={require('../assets/logo.png')} 
             alt="Smart Meter Logo" 
+            loading="lazy"
+            decoding="async"
             style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }}
             onError={e => e.target.style.display = 'none'} 
           />
@@ -53,79 +69,96 @@ const About = () => {
       <section className={styles.technicalOverview}>
         <div className={styles.technicalContent}>
           <h2>Student Information</h2>
-          <div className={styles.technicalGrid}>
-            <div className={styles.techCard}>
-              <div className={styles.techIcon}>
-                <i className="fas fa-user-graduate"></i>
+          {isInitialLoad ? (
+            <div className={styles.technicalGrid}>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          ) : (
+            <div className={styles.technicalGrid}>
+              <div className={styles.techCard}>
+                <div className={styles.techIcon}>
+                  <i className="fas fa-user-graduate"></i>
+                </div>
+                <div className={styles.techInfo}>
+                  <h3>Student Name</h3>
+                  <p><strong>GMP Sankalpa</strong></p>
+                  <p>Final Year Research Student</p>
+                  <p>Department of Information and Communication Technology</p>
+                </div>
               </div>
-              <div className={styles.techInfo}>
-                <h3>Student Name</h3>
-                <p><strong>GMP Sankalpa</strong></p>
-                <p>Final Year Research Student</p>
-                <p>Department of Information and Communication Technology</p>
+              <div className={styles.techCard}>
+                <div className={styles.techIcon}>
+                  <i className="fas fa-id-card"></i>
+                </div>
+                <div className={styles.techInfo}>
+                  <h3>Index Number</h3>
+                  <p><strong>ICT318</strong></p>
+                  <p>Academic Year: 2019-2020</p>
+                  <p>Final Year Research Project</p>
+                </div>
+              </div>
+              <div className={styles.techCard}>
+                <div className={styles.techIcon}>
+                  <i className="fas fa-graduation-cap"></i>
+                </div>
+                <div className={styles.techInfo}>
+                  <h3>Degree Program</h3>
+                  <p>Bachelor of Information and Communication Technology (Honours)</p>
+                </div>
               </div>
             </div>
-            <div className={styles.techCard}>
-              <div className={styles.techIcon}>
-                <i className="fas fa-id-card"></i>
-              </div>
-              <div className={styles.techInfo}>
-                <h3>Index Number</h3>
-                <p><strong>ICT318</strong></p>
-                <p>Academic Year: 2019-2020</p>
-                <p>Final Year Research Project</p>
-              </div>
-            </div>
-            <div className={styles.techCard}>
-              <div className={styles.techIcon}>
-                <i className="fas fa-graduation-cap"></i>
-              </div>
-              <div className={styles.techInfo}>
-                <h3>Degree Program</h3>
-                <p>Bachelor of Information and Communication Technology (Honours)</p>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
       {/* Project Overview Section */}
       <section className={styles.featuresModern}>
         <h2>Project Overview</h2>
-        <div className={styles.featuresGrid}>
-          <div className={styles.featureCard}>
-            <span className={styles.featureIcon}>🎯</span>
-            <h3>Problem Statement</h3>
-            <p>
-              Conventional energy monitoring lacks real-time data, theft detection, and remote control 
-              capabilities, leading to inefficiency and financial losses.
-            </p>
+        {isInitialLoad ? (
+          <div className={styles.featuresGrid}>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
           </div>
-          <div className={styles.featureCard}>
-            <span className={styles.featureIcon}>🚀</span>
-            <h3>Solution</h3>
-            <p>
-              IoT-based smart energy management system with real-time monitoring, theft detection, 
-              and remote control capabilities.
-            </p>
+        ) : (
+          <div className={styles.featuresGrid}>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}><i className="fas fa-bullseye"></i></div>
+              <h3>Problem Statement</h3>
+              <p>
+                Conventional energy monitoring lacks real-time data, theft detection, and remote control 
+                capabilities, leading to inefficiency and financial losses.
+              </p>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}><i className="fas fa-rocket"></i></div>
+              <h3>Solution</h3>
+              <p>
+                IoT-based smart energy management system with real-time monitoring, theft detection, 
+                and remote control capabilities.
+              </p>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}><i className="fas fa-lightbulb"></i></div>
+              <h3>Innovation</h3>
+              <p>
+                Cost-effective Arduino-based system with commercial-grade features accessible to 
+                typical households.
+              </p>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}><i className="fas fa-globe-americas"></i></div>
+              <h3>Impact</h3>
+              <p>
+                Addresses global energy theft ($96B annual loss) while promoting sustainable energy 
+                consumption.
+              </p>
+            </div>
           </div>
-          <div className={styles.featureCard}>
-            <span className={styles.featureIcon}>💡</span>
-            <h3>Innovation</h3>
-            <p>
-              Cost-effective Arduino-based system with commercial-grade features accessible to 
-              typical households.
-            </p>
-          </div>
-          <div className={styles.featureCard}>
-            <span className={styles.featureIcon}>🌍</span>
-            <h3>Impact</h3>
-            <p>
-              Addresses global energy theft ($96B annual loss) while promoting sustainable energy 
-              consumption.
-            </p>
-          </div>
-        </div>
+        )}
       </section>
 
       {/* Project Details Section */}
@@ -172,59 +205,67 @@ const About = () => {
       <section className={styles.technicalOverview}>
         <div className={styles.technicalContent}>
           <h2>Technology Stack</h2>
-          <div className={styles.technicalGrid}>
-            <div className={styles.techCard}>
-              <div className={styles.techIcon}>
-                <i className="fas fa-microchip"></i>
+          {isInitialLoad ? (
+            <div className={styles.technicalGrid}>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          ) : (
+            <div className={styles.technicalGrid}>
+              <div className={styles.techCard}>
+                <div className={styles.techIcon}>
+                  <i className="fas fa-microchip"></i>
+                </div>
+                <div className={styles.techInfo}>
+                  <h3>Hardware Components</h3>
+                  <ul>
+                    <li>Arduino Uno R3</li>
+                    <li>ESP32 WiFi Module</li>
+                    <li>ACS712 Current Sensor</li>
+                    <li>ZMPT101B Voltage Sensor</li>
+                    <li>Relay Modules (4-Channel)</li>
+                    <li>LCD Display (16x2)</li>
+                    <li>Power Supply Unit</li>
+                  </ul>
+                </div>
               </div>
-              <div className={styles.techInfo}>
-                <h3>Hardware Components</h3>
-                <ul>
-                  <li>Arduino Uno R3</li>
-                  <li>ESP32 WiFi Module</li>
-                  <li>ACS712 Current Sensor</li>
-                  <li>ZMPT101B Voltage Sensor</li>
-                  <li>Relay Modules (4-Channel)</li>
-                  <li>LCD Display (16x2)</li>
-                  <li>Power Supply Unit</li>
-                </ul>
+              <div className={styles.techCard}>
+                <div className={styles.techIcon}>
+                  <i className="fas fa-code"></i>
+                </div>
+                <div className={styles.techInfo}>
+                  <h3>Software & Programming</h3>
+                  <ul>
+                    <li>Arduino IDE (C/C++)</li>
+                    <li>Firebase Realtime Database</li>
+                    <li>React.js (Web Dashboard)</li>
+                    <li>Android Studio (Mobile App)</li>
+                    <li>MQTT Protocol</li>
+                    <li>REST API</li>
+                    <li>Cloud Functions</li>
+                  </ul>
+                </div>
+              </div>
+              <div className={styles.techCard}>
+                <div className={styles.techIcon}>
+                  <i className="fas fa-chart-line"></i>
+                </div>
+                <div className={styles.techInfo}>
+                  <h3>Features & Capabilities</h3>
+                  <ul>
+                    <li>Real-time Monitoring</li>
+                    <li>Energy Theft Detection</li>
+                    <li>Remote Appliance Control</li>
+                    <li>Data Analytics & Reports</li>
+                    <li>Push Notifications</li>
+                    <li>Historical Data Storage</li>
+                    <li>User Authentication</li>
+                  </ul>
+                </div>
               </div>
             </div>
-            <div className={styles.techCard}>
-              <div className={styles.techIcon}>
-                <i className="fas fa-code"></i>
-              </div>
-              <div className={styles.techInfo}>
-                <h3>Software & Programming</h3>
-                <ul>
-                  <li>Arduino IDE (C/C++)</li>
-                  <li>Firebase Realtime Database</li>
-                  <li>React.js (Web Dashboard)</li>
-                  <li>Android Studio (Mobile App)</li>
-                  <li>MQTT Protocol</li>
-                  <li>REST API</li>
-                  <li>Cloud Functions</li>
-                </ul>
-              </div>
-            </div>
-            <div className={styles.techCard}>
-              <div className={styles.techIcon}>
-                <i className="fas fa-chart-line"></i>
-              </div>
-              <div className={styles.techInfo}>
-                <h3>Features & Capabilities</h3>
-                <ul>
-                  <li>Real-time Monitoring</li>
-                  <li>Energy Theft Detection</li>
-                  <li>Remote Appliance Control</li>
-                  <li>Data Analytics & Reports</li>
-                  <li>Push Notifications</li>
-                  <li>Historical Data Storage</li>
-                  <li>User Authentication</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -392,18 +433,6 @@ const About = () => {
           />
         </div>
       </section>
-
-      {/* Social Media Section */}
-          <section className={styles.socialModern}>
-            <h2>Connect with the Developer</h2>
-            <div className={styles.socialIcons}>
-              <a href="https://github.com/gmpsankalpa" target="_blank" title="GitHub" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-              <a href="https://linkedin.com/in/gmpsankalpa" target="_blank" title="LinkedIn" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-              <a href="https://twitter.com/gmpsankalpa" target="_blank" title="Twitter" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
-              <a href="https://facebook.com/gmpsankalpa" target="_blank" title="Facebook" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
-            </div>
-            <p className={styles.devCredit}>Developed by <strong>GMP Sankalpa</strong> | Final Year Project</p>
-          </section>
     </main>
   );
 };

@@ -1,6 +1,7 @@
 {
   "short_name": "Smart Energy Meter",
-  "name": "Smart Energy Meter",
+  "name": "Smart Energy Meter - Real-time Energy Monitoring",
+  "description": "Monitor your energy consumption in real-time with smart analytics and alerts",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,12 +11,14 @@
     {
       "src": "android-chrome-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "android-chrome-512x512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     },
     {
       "src": "apple-touch-icon.png",
@@ -39,7 +42,37 @@
     }
   ],
   "start_url": ".",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#0a1026"
+  "orientation": "portrait-primary",
+  "theme_color": "#0a1026",
+  "background_color": "#0a1026",
+  "categories": ["utilities", "productivity"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View real-time energy data",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "short_name": "Profile",
+      "description": "Manage your profile",
+      "url": "/profile",
+      "icons": [
+        {
+          "src": "android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
 }
