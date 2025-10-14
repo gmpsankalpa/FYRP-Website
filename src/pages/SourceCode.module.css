@@ -1,0 +1,664 @@
+/* Modern CSS Variables for Consistent Design */
+:root {
+	--primary-bg: #0a1026;
+	--secondary-bg: #101a3a;
+	--accent-color: #ffe066;
+	--text-primary: #e6e6e6;
+	--text-secondary: #b8b8b8;
+	--card-bg: #101a3a;
+	--card-shadow: 0 2px 16px #ffe06622;
+	--card-hover-shadow: 0 8px 32px #ffe06655;
+	--border-radius: 16px;
+	--border-radius-lg: 18px;
+	--transition: all 0.3s ease;
+	--android-green: #3ddc84;
+	--ios-blue: #007aff;
+	--unavailable-gray: #6c757d;
+	
+	/* Spacing Variables */
+	--spacing-xs: clamp(0.25rem, 1vw, 0.5rem);
+	--spacing-sm: clamp(0.5rem, 2vw, 1rem);
+	--spacing-md: clamp(1rem, 3vw, 1.5rem);
+	--spacing-lg: clamp(1.5rem, 4vw, 2.5rem);
+	--spacing-xl: clamp(2rem, 5vw, 4rem);
+	
+	/* Typography */
+	--font-size-base: clamp(0.875rem, 2vw, 1rem);
+	--font-size-sm: clamp(0.8rem, 1.8vw, 0.9rem);
+	--font-size-lg: clamp(1.1rem, 2.5vw, 1.3rem);
+	--font-size-xl: clamp(1.3rem, 3vw, 1.6rem);
+	--font-size-2xl: clamp(1.6rem, 4vw, 2.2rem);
+	--font-size-3xl: clamp(2rem, 5vw, 2.7rem);
+}
+
+/* Global Optimizations */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Segoe UI", Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: var(--primary-bg);
+	color: var(--text-primary);
+	min-height: 100vh;
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Hero Section */
+.hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(120deg, var(--secondary-bg) 60%, var(--accent-color) 120%);
+	padding: clamp(32px, 8vw, 60px) var(--spacing-md) clamp(24px, 6vw, 40px);
+	min-height: clamp(280px, 50vh, 350px);
+	gap: clamp(24px, 5vw, 40px);
+	box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 224, 102, 0.15) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.heroContent {
+	max-width: 500px;
+	color: #fff;
+	padding: 0 var(--spacing-md);
+	flex: 1 1 300px;
+	position: relative;
+	z-index: 10;
+}
+
+.heroContent h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.2;
+    color: #fff;
+}
+
+.highlight {
+    color: var(--accent-color);
+    text-shadow: 0 2px 8px #101a3a44;
+}
+
+.heroDesc {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+    color: var(--accent-color);
+    line-height: 1.6;
+}
+
+.heroImage {
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.heroImage img {
+	width: clamp(120px, 20vw, 180px);
+	height: auto;
+	border-radius: 24px;
+	box-shadow: none;
+	background: none;
+	object-fit: contain;
+	max-width: 100%;
+}
+
+/* ========================================
+   Repositories Section
+   ======================================== */
+.repositoriesSection {
+    margin: var(--spacing-xl) auto;
+    max-width: 1400px;
+    padding: 0 var(--spacing-md);
+}
+
+.repositoriesSection h2 {
+    color: var(--accent-color);
+    font-size: var(--font-size-2xl);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.sectionSubtitle {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.reposGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: var(--spacing-xl);
+}
+
+.repoCard {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 2px solid transparent;
+}
+
+.repoCard:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: rgba(255, 224, 102, 0.3);
+}
+
+.repoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.repoIcon {
+    font-size: clamp(2.5rem, 6vw, 3rem);
+    transition: transform 0.3s ease;
+}
+
+.repoCard:hover .repoIcon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.repoStats {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.languageBadge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 2px solid;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.languageBadge i {
+    font-size: 8px;
+}
+
+.repoContent {
+    flex: 1;
+}
+
+.repoContent h3 {
+    color: var(--accent-color);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3;
+}
+
+.repoDescription {
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+}
+
+.techStack {
+    margin-bottom: var(--spacing-md);
+}
+
+.techStack h4 {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm);
+}
+
+.techTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.techTag {
+    background: rgba(255, 224, 102, 0.1);
+    color: var(--accent-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: var(--font-size-sm);
+    border: 1px solid rgba(255, 224, 102, 0.3);
+    transition: var(--transition);
+}
+
+.techTag:hover {
+    background: rgba(255, 224, 102, 0.2);
+    transform: translateY(-2px);
+}
+
+.features {
+    margin-bottom: var(--spacing-md);
+}
+
+.features h4 {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm);
+}
+
+.features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features li {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.features li i {
+    color: var(--android-green);
+    font-size: 12px;
+}
+
+.repoFooter {
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.githubButton {
+    width: 100%;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid;
+    border-radius: 10px;
+    font-size: var(--font-size-base);
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.githubButton:hover {
+    background: var(--accent-color);
+    color: var(--primary-bg);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.githubButton i {
+    font-size: var(--font-size-lg);
+}
+
+.repoMeta {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.repoMeta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.repoMeta i {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   Getting Started Section
+   ======================================== */
+.gettingStarted {
+    margin: var(--spacing-xl) auto;
+    max-width: 1200px;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: linear-gradient(135deg, rgba(16, 26, 58, 0.5) 0%, rgba(10, 16, 38, 0.8) 100%);
+    border-radius: var(--border-radius-lg);
+}
+
+.gettingStarted h2 {
+    color: var(--accent-color);
+    font-size: var(--font-size-2xl);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.stepsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(1.2rem, 3vw, 2rem);
+}
+
+.stepCard {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stepCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.stepNumber {
+    width: clamp(3rem, 7vw, 4rem);
+    height: clamp(3rem, 7vw, 4rem);
+    background: linear-gradient(135deg, var(--accent-color), #ffa500);
+    color: var(--primary-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 16px rgba(255, 224, 102, 0.4);
+}
+
+.stepContent h3 {
+    color: var(--accent-color);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.stepContent p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+}
+
+.stepContent code {
+    display: block;
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--accent-color);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: var(--font-size-sm);
+    font-family: 'Courier New', monospace;
+    margin-top: var(--spacing-sm);
+    word-break: break-all;
+}
+
+/* ========================================
+   Contribution Section
+   ======================================== */
+.contributionSection {
+    margin: var(--spacing-xl) auto;
+    max-width: 1200px;
+    padding: 0 var(--spacing-md);
+}
+
+.contributionContent {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    padding: clamp(2rem, 5vw, 3rem);
+    box-shadow: var(--card-shadow);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: var(--spacing-xl);
+    align-items: center;
+}
+
+.contributionText h2 {
+    color: var(--accent-color);
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.contributionText p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+}
+
+.contributionList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contributionList li {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contributionList i {
+    color: var(--accent-color);
+    font-size: var(--font-size-lg);
+}
+
+.contributionActions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.contributionBtn {
+    background: linear-gradient(135deg, var(--accent-color), #ffa500);
+    color: var(--primary-bg);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: 10px;
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition);
+    box-shadow: 0 4px 16px rgba(255, 224, 102, 0.4);
+}
+
+.contributionBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255, 224, 102, 0.6);
+}
+
+.contributionBtn i {
+    font-size: var(--font-size-xl);
+}
+
+.contributionNote {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.contributionNote i {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - OPTIMIZED FOR ALL DEVICES
+   ======================================== */
+
+/* Large Tablets & Small Desktops */
+@media (max-width: 1024px) {
+    .hero {
+        padding: clamp(2.5rem, 6vw, 4rem) var(--spacing-md);
+    }
+    
+    .reposGrid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+	.hero {
+        flex-direction: column;
+        text-align: center;
+        padding: clamp(2rem, 5vw, 3rem) var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .heroContent {
+        padding: 0;
+    }
+    
+    .heroImage {
+        order: -1;
+        margin-bottom: 0;
+    }
+    
+    .reposGrid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .stepsGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contributionContent {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .contributionList {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 480px) {
+	.hero {
+        min-height: auto;
+        gap: var(--spacing-xs);
+        padding: clamp(1.5rem, 4vw, 2.5rem) var(--spacing-sm);
+    }
+    
+    .heroContent h1 {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .heroDesc {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .repositoriesSection,
+    .gettingStarted,
+    .contributionSection {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .repoCard {
+        padding: var(--spacing-md);
+    }
+    
+    .techTags {
+        gap: 6px;
+    }
+    
+    .techTag {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 360px) {
+    .stepContent code {
+        font-size: 0.7rem;
+        padding: 8px;
+    }
+}
+
+/* Landscape Orientation Optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+	.hero {
+        min-height: auto;
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .heroContent h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .githubButton,
+    .contributionBtn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

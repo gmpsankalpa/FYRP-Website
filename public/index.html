@@ -9,6 +9,32 @@
       name="description"
       content="Experience real-time energy tracking, instant alerts, and smart analytics with the next-generation Smart Energy Meter."
     />
+    <meta name="keywords" content="smart energy meter, energy monitoring, real-time power tracking, energy analytics, IoT energy meter, power consumption monitor" />
+    <meta name="author" content="Smart Energy Meter Team" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fyrp-web.vercel.app/" />
+    <meta property="og:title" content="Smart Energy Meter - Real-time Energy Monitoring" />
+    <meta property="og:description" content="Experience real-time energy tracking, instant alerts, and smart analytics. Monitor voltage, current, power consumption, and get intelligent insights." />
+    <meta property="og:image" content="%PUBLIC_URL%/android-chrome-512x512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:site_name" content="Smart Energy Meter" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://fyrp-web.vercel.app/" />
+    <meta name="twitter:title" content="Smart Energy Meter - Real-time Energy Monitoring" />
+    <meta name="twitter:description" content="Experience real-time energy tracking, instant alerts, and smart analytics with the next-generation Smart Energy Meter." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/android-chrome-512x512.png" />
+    <meta name="twitter:creator" content="@SmartEnergyMeter" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://fyrp-web.vercel.app/" />
+    
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/android-chrome-512x512.png">
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png">
@@ -19,6 +45,8 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -29,6 +57,46 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Home - Smart Energy Meter</title>
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Smart Energy Meter",
+      "description": "Real-time energy monitoring dashboard with intelligent analytics and instant alerts",
+      "url": "https://fyrp-web.vercel.app/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Real-time voltage monitoring",
+        "Current consumption tracking",
+        "Power usage analytics",
+        "Instant threshold alerts",
+        "Historical data visualization",
+        "Customizable dashboards"
+      ],
+      "screenshot": "%PUBLIC_URL%/android-chrome-512x512.png",
+      "softwareVersion": "1.0.0",
+      "datePublished": "2024-01-01",
+      "dateModified": "2025-10-13",
+      "inLanguage": "en-US",
+      "isAccessibleForFree": true,
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

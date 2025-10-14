@@ -131,13 +131,15 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px); /* Safari support */
     border-bottom: 2px solid rgba(255, 224, 102, 0.2);
-    padding: clamp(14px, 3vw, 20px) clamp(20px, 5vw, 60px);
+    padding: clamp(10px, 2vw, 14px) clamp(20px, 5vw, 60px);
     position: sticky;
     top: 64px;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     -webkit-user-select: none; /* Prevent text selection on mobile */
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .heroStatus {
@@ -162,15 +164,18 @@ body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.65rem 1.25rem;
+    padding: 0.5rem 1rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 224, 102, 0.2);
     border-radius: 30px;
-    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-size: max(16px, clamp(0.85rem, 2vw, 0.95rem));
     font-weight: 600;
     color: var(--text-primary);
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 120px;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .statusIndicator:hover {
@@ -204,8 +209,8 @@ body {
 }
 
 .statusDot {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: #ff4444;
     position: relative;
@@ -240,14 +245,17 @@ body {
 .lastUpdate {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.65rem 1.25rem;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
     background: rgba(255, 224, 102, 0.05);
     border: 1px solid rgba(255, 224, 102, 0.15);
     border-radius: 30px;
-    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    font-size: max(16px, clamp(0.8rem, 1.8vw, 0.9rem));
     color: var(--text-secondary);
     transition: all 0.3s ease;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .lastUpdate i {
@@ -271,13 +279,15 @@ body {
     background: rgba(255, 224, 102, 0.08);
     border: 2px solid rgba(255, 224, 102, 0.3);
     color: var(--accent-color);
-    width: clamp(44px, 10vw, 50px);
-    height: clamp(44px, 10vw, 50px);
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     font-size: clamp(1.1rem, 2.5vw, 1.3rem);
     transition: all 0.3s ease;
     flex-shrink: 0;
@@ -989,63 +999,6 @@ body {
     color: #0a1026;
 }
 
-/* Social Media Section */
-.socialModern {
-    margin: var(--spacing-xl) auto;
-    max-width: 900px;
-    padding: clamp(2rem, 4vw, 3rem) var(--spacing-md);
-    text-align: center;
-}
-
-.socialModern h2 {
-    color: var(--accent-color);
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--spacing-lg);
-}
-
-.socialIcons {
-    display: flex;
-    justify-content: center;
-    gap: clamp(1rem, 3vw, 1.5rem);
-    margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap;
-}
-
-.socialIcons a {
-    width: clamp(3rem, 8vw, 4rem);
-    height: clamp(3rem, 8vw, 4rem);
-    background: var(--card-bg);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-color);
-    font-size: clamp(1.3rem, 3vw, 1.6rem);
-    transition: var(--transition);
-    box-shadow: var(--card-shadow);
-    text-decoration: none;
-}
-
-.socialIcons a:hover,
-.socialIcons a:focus {
-    background: var(--accent-color);
-    color: var(--primary-bg);
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: var(--card-hover-shadow);
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-}
-
-.devCredit {
-    color: var(--text-secondary);
-    font-size: var(--font-size-base);
-    margin-top: var(--spacing-lg);
-}
-
-.devCredit strong {
-    color: var(--accent-color);
-}
-
 /* Modal */
 .modal {
     display: none;
@@ -1144,6 +1097,115 @@ body {
 }
 
 .clearBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 68, 68, 0.4);
+}
+
+/* Confirmation Modal Styles */
+.confirmMessage {
+    margin: 1.5rem 0;
+    color: var(--text-primary);
+}
+
+.confirmMessage p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.resetDetails {
+    background: rgba(255, 224, 102, 0.05);
+    border: 2px solid rgba(255, 224, 102, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.resetDetails h4 {
+    color: var(--accent-color);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resetDetails ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resetDetails ul li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: rgba(10, 16, 38, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.resetDetails ul li:hover {
+    background: rgba(10, 16, 38, 0.5);
+    transform: translateX(5px);
+}
+
+.resetDetails ul li i {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+}
+
+.resetDetails ul li strong {
+    color: var(--accent-color);
+    margin-left: auto;
+}
+
+.confirmActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cancelBtn,
+.confirmBtn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    min-height: 48px;
+}
+
+.cancelBtn {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancelBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.confirmBtn {
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    color: white;
+}
+
+.confirmBtn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255, 68, 68, 0.4);
 }
@@ -1254,18 +1316,18 @@ body {
     /* Status Bar - Tablet */
     .heroStatusBar {
         top: 56px; /* Adjust for smaller mobile nav */
-        padding: clamp(12px, 2.5vw, 16px) clamp(16px, 4vw, 24px);
+        padding: 8px clamp(16px, 4vw, 24px);
     }
 
     .heroStatus {
         flex-direction: row;
-        gap: clamp(12px, 3vw, 16px);
+        gap: 10px;
         flex-wrap: nowrap;
     }
 
     .statusLeft {
         flex-direction: row;
-        gap: 10px;
+        gap: 8px;
         flex: 1 1 auto;
         min-width: 0; /* Allow items to shrink */
     }
@@ -1275,9 +1337,10 @@ body {
     }
 
     .statusIndicator {
-        font-size: clamp(0.8rem, 2.5vw, 0.85rem);
+        font-size: max(16px, clamp(0.8rem, 2.5vw, 0.85rem));
         padding: 8px 14px;
-        min-width: 120px;
+        min-width: 110px;
+        gap: 0.6rem;
         white-space: nowrap;
         text-align: center;
     }
@@ -1288,7 +1351,7 @@ body {
     }
 
     .lastUpdate {
-        font-size: clamp(0.75rem, 2.2vw, 0.8rem);
+        font-size: max(16px, clamp(0.75rem, 2.2vw, 0.8rem));
         padding: 8px 12px;
         white-space: nowrap;
     }
@@ -1399,8 +1462,7 @@ body {
 
     .realTimeSection,
     .controlSection,
-    .actionSection,
-    .socialModern {
+    .actionSection {
         margin: 1rem;
     }
 
@@ -1496,38 +1558,78 @@ body {
     /* Status Bar - Mobile */
     .heroStatusBar {
         top: 56px;
-        padding: clamp(10px, 2.5vw, 14px) clamp(12px, 3vw, 16px);
+        padding: 8px clamp(12px, 3vw, 16px);
         border-bottom: 1px solid rgba(255, 224, 102, 0.15);
     }
 
     .heroStatus {
-        flex-direction: column;
-        gap: 12px;
+        flex-direction: row;
+        gap: 8px;
         padding: 0;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .statusLeft {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        align-items: stretch;
+        flex-direction: row;
+        gap: 8px;
+        flex: 1 1 auto;
+        min-width: 0;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow: hidden;
     }
 
     .statusRight {
-        width: 100%;
-        justify-content: center;
-        padding-top: 4px;
+        flex-shrink: 0;
+        width: auto;
     }
 
     .statusIndicator {
-        font-size: 0.8rem;
-        padding: 10px 14px;
-        width: 100%;
-        justify-content: center;
+        font-size: max(16px, 0.8rem);
+        padding: 8px 12px;
         min-width: unset;
-        border-radius: 25px;
-        gap: 0.6rem;
-        text-align: center;
+        width: auto;
+        flex: 0 0 auto;
+        gap: 0.5rem;
+        white-space: nowrap;
+    }
+
+    .statusIndicator span:not(.statusDot) {
+        display: none; /* Hide "System Online/Offline" text on mobile */
+    }
+
+    .statusDot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .lastUpdate {
+        font-size: max(16px, 0.75rem);
+        padding: 8px 10px;
+        width: auto;
+        flex: 1 1 auto;
+        white-space: nowrap;
+        gap: 0.4rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .lastUpdate span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .lastUpdate i {
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .notificationIcon {
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
     }
 
     .statusIndicator.online:active {
@@ -1544,13 +1646,8 @@ body {
         transform: scale(0.98);
     }
 
-    .statusDot {
-        width: 11px;
-        height: 11px;
-    }
-
     .lastUpdate {
-        font-size: 0.75rem;
+        font-size: max(16px, 0.75rem);
         padding: 8px 12px;
         width: 100%;
         justify-content: center;
@@ -1565,14 +1662,6 @@ body {
     .lastUpdate:active {
         transform: scale(0.98);
         background: rgba(255, 224, 102, 0.12);
-    }
-
-    .notificationIcon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.1rem;
-        margin: 0 auto;
-        border-width: 2px;
     }
 
     .notificationIcon:active {
@@ -1601,8 +1690,7 @@ body {
     .realTimeSection h2,
     .controlSection h2,
     .analyticsSection h2,
-    .actionSection h2,
-    .socialModern h2 {
+    .actionSection h2 {
         font-size: 1.5rem;
     }
 
@@ -1612,16 +1700,6 @@ body {
 
     .modalContent {
         padding: 1.5rem;
-    }
-
-    .socialIcons {
-        gap: 1rem;
-    }
-
-    .socialIcons a {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
     }
 }
 
@@ -1689,33 +1767,32 @@ body {
 
     /* Status Bar - Extra Small Devices */
     .heroStatusBar {
-        padding: 8px 12px;
+        padding: 6px 8px;
     }
 
     .heroStatus {
-        gap: 10px;
+        gap: 6px;
     }
 
     .statusLeft {
-        gap: 8px;
+        gap: 6px;
     }
 
     .statusIndicator {
-        font-size: 0.75rem;
-        padding: 8px 12px;
-        gap: 0.5rem;
-        text-align: center;
+        font-size: max(16px, 0.75rem);
+        padding: 6px 8px;
+        gap: 0.4rem;
     }
 
     .statusDot {
-        width: 10px;
-        height: 10px;
+        width: 9px;
+        height: 9px;
     }
 
     .lastUpdate {
-        font-size: 0.7rem;
-        padding: 7px 10px;
-        gap: 0.4rem;
+        font-size: max(16px, 0.7rem);
+        padding: 6px 8px;
+        gap: 0.35rem;
     }
 
     .lastUpdate i {
@@ -1723,9 +1800,9 @@ body {
     }
 
     .notificationIcon {
-        width: 44px;
-        height: 44px;
-        font-size: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
     }
 
     .notificationIcon span {
@@ -1776,19 +1853,19 @@ body {
     }
 
     .heroStatusBar {
-        padding: 8px clamp(16px, 4vw, 24px);
+        padding: 6px clamp(16px, 4vw, 24px);
         top: 50px;
     }
 
     .heroStatus {
         flex-direction: row;
-        gap: 12px;
+        gap: 10px;
         flex-wrap: nowrap;
     }
 
     .statusLeft {
         flex-direction: row;
-        gap: 10px;
+        gap: 8px;
         flex: 1 1 auto;
     }
 
@@ -1798,9 +1875,19 @@ body {
 
     .statusIndicator {
         padding: 6px 12px;
-        font-size: 0.75rem;
+        font-size: max(16px, 0.75rem);
         min-width: 100px;
-        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .lastUpdate {
+        padding: 6px 10px;
+        font-size: max(16px, 0.7rem);
+    }
+
+    .notificationIcon {
+        width: 40px;
+        height: 40px;
     }
 
     .statusDot {
@@ -1808,18 +1895,11 @@ body {
         height: 10px;
     }
 
-    .lastUpdate {
-        padding: 6px 10px;
-        font-size: 0.7rem;
-    }
-
     .lastUpdate i {
         font-size: 0.75rem;
     }
 
     .notificationIcon {
-        width: 40px;
-        height: 40px;
         font-size: 0.95rem;
     }
 

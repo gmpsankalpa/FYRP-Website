@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import styles from './Login.module.css';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Login = () => {
+  // Set page title
+  usePageTitle('Login');
+
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -20,6 +26,11 @@ const Login = () => {
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
+    // Redirect if already logged in
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+
     // Load Font Awesome
     const faLink = document.createElement('link');
     faLink.rel = 'stylesheet';
@@ -47,7 +58,7 @@ const Login = () => {
     return () => {
       document.head.removeChild(faLink);
     };
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   const showAlert = (message, type = 'info') => {
     setAlert({ show: true, message, type });
@@ -162,12 +173,8 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      // Sign in with Firebase
-      await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      // Sign in using AuthContext login method
+      await login(formData.email, formData.password);
 
       // Handle remember me
       if (formData.rememberMe) {
@@ -181,16 +188,16 @@ const Login = () => {
       sessionStorage.removeItem('lastAttemptTime');
 
       // Log security event
-      console.log('Login successful:', {
-        email: formData.email,
-        timestamp: new Date().toISOString()
-      });
+      // console.log('Login successful:', {
+      //   email: formData.email,
+      //   timestamp: new Date().toISOString()
+      // });
 
       showAlert('Login successful! Redirecting...', 'success');
 
-      // Redirect to dashboard (you'll need to create this route)
+      // Redirect to dashboard
       setTimeout(() => {
-        navigate('/dashboard'); // Change to '/dashboard' when you create it
+        navigate('/dashboard');
       }, 1500);
 
     } catch (error) {
@@ -463,48 +470,6 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Social Media Section */}
-      <section className={styles.socialModern}>
-        <h2>Connect with the Developer</h2>
-        <div className={styles.socialIcons}>
-          <a
-            href="https://github.com/gmpsankalpa"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="GitHub"
-          >
-            <i className="fab fa-github"></i>
-          </a>
-          <a
-            href="https://linkedin.com/in/gmpsankalpa"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="LinkedIn"
-          >
-            <i className="fab fa-linkedin"></i>
-          </a>
-          <a
-            href="https://twitter.com/gmpsankalpa"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Twitter"
-          >
-            <i className="fab fa-twitter"></i>
-          </a>
-          <a
-            href="https://facebook.com/gmpsankalpa"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Facebook"
-          >
-            <i className="fab fa-facebook"></i>
-          </a>
-        </div>
-        <p className={styles.devCredit}>
-          Developed by <strong>GMP Sankalpa</strong> | Final Year Project
-        </p>
       </section>
     </main>
   );
