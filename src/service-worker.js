@@ -1,7 +1,12 @@
 /* eslint-disable no-restricted-globals */
+/* global clients */
 
 // Service Worker for Smart Energy Meter Dashboard
 // Provides offline functionality and caching strategies
+
+// Precache manifest placeholder for Workbox
+// eslint-disable-next-line no-unused-expressions
+self.__WB_MANIFEST;
 
 const CACHE_NAME = 'smart-energy-meter-v1';
 const RUNTIME_CACHE = 'runtime-cache-v1';
@@ -48,6 +53,7 @@ self.addEventListener('activate', (event) => {
               console.log('[Service Worker] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
+            return Promise.resolve();
           })
         );
       })
