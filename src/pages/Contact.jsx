@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './Contact.module.css';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Contact = () => {
+  // Set page title
+  usePageTitle('Contact Us');
+
   const [formStatus, setFormStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,7 +27,7 @@ const Contact = () => {
     setFormStatus('');
 
     const formData = new FormData(e.target);
-    
+
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -52,20 +56,22 @@ const Contact = () => {
           <h1>
             <span className={styles.highlight}>
               <i className="fas fa-envelope"></i>
-            {' '}
-            Get</span> In Touch
+              {' '}
+              Get</span> In Touch
           </h1>
           <p className={styles.heroDesc}>
-            Have questions about Smart Energy Meter? We're here to help. Reach out to us for 
+            Have questions about Smart Energy Meter? We're here to help. Reach out to us for
             technical support, project inquiries, or partnership opportunities.
           </p>
         </div>
         <div className={styles.heroImage}>
-          <img 
-            src={require('../assets/logo.png')} 
-            alt="Smart Meter Logo" 
+          <img
+            src={require('../assets/logo.png')}
+            alt="Smart Meter Logo"
+            loading="lazy"
+            decoding="async"
             style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }}
-            onError={e => e.target.style.display = 'none'} 
+            onError={e => e.target.style.display = 'none'}
           />
         </div>
       </section>
@@ -84,18 +90,18 @@ const Contact = () => {
                 <input type="hidden" name="subject" value="New Contact Form Submission from Smart Energy Meter" />
                 <input type="hidden" name="from_name" value="Smart Energy Meter Contact Form" />
                 <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
-                
+
                 <div className={styles.formGroup}>
                   <label htmlFor="name">
                     <i className="fas fa-user"></i>
                     Full Name
                   </label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    required 
-                    placeholder="Enter your full name" 
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Enter your full name"
                   />
                 </div>
 
@@ -104,12 +110,12 @@ const Contact = () => {
                     <i className="fas fa-envelope"></i>
                     Email Address
                   </label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required 
-                    placeholder="Enter your email address" 
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="Enter your email address"
                   />
                 </div>
 
@@ -134,11 +140,11 @@ const Contact = () => {
                     <i className="fas fa-comment"></i>
                     Message
                   </label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    rows="6" 
-                    required 
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="6"
+                    required
                     placeholder="Tell us about your inquiry..."
                   ></textarea>
                 </div>
@@ -151,7 +157,7 @@ const Contact = () => {
                 </div>
 
                 <button type="submit" className={`${styles.submitBtn} ${isLoading ? styles.loading : ''}`} disabled={isLoading}>
-                  <i className="fas fa-paper-plane"></i> 
+                  <i className="fas fa-paper-plane"></i>
                   {isLoading ? 'Sending...' : 'Send Message'}
                 </button>
 
@@ -177,7 +183,7 @@ const Contact = () => {
               <h2>
                 <i className="fas fa-info-circle"></i> Contact Information
               </h2>
-              
+
               <div className={styles.contactMethod}>
                 <div className={styles.contactIcon}>
                   <i className="fas fa-envelope"></i>
@@ -241,7 +247,7 @@ const Contact = () => {
                   <i className="fas fa-cogs"></i>
                   <span>Configuration Guide</span>
                 </a>
-                <a href="https://github.com/gmpsankalpa" target="_blank" rel="noopener noreferrer" className={styles.supportLink}>
+                <a href="https://github.com/gmpsankalpa/smart_energy_meter" target="_blank" rel="noopener noreferrer" className={styles.supportLink}>
                   <i className="fab fa-github"></i>
                   <span>GitHub Repository</span>
                 </a>
@@ -249,28 +255,6 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Social Media Section */}
-      <section className={styles.socialModern}>
-        <h2>Connect with the Developer</h2>
-        <div className={styles.socialIcons}>
-          <a href="https://github.com/gmpsankalpa" target="_blank" rel="noopener noreferrer" title="GitHub">
-            <i className="fab fa-github"></i>
-          </a>
-          <a href="https://linkedin.com/in/gmpsankalpa" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-            <i className="fab fa-linkedin"></i>
-          </a>
-          <a href="https://twitter.com/gmpsankalpa" target="_blank" rel="noopener noreferrer" title="Twitter">
-            <i className="fab fa-twitter"></i>
-          </a>
-          <a href="https://facebook.com/gmpsankalpa" target="_blank" rel="noopener noreferrer" title="Facebook">
-            <i className="fab fa-facebook"></i>
-          </a>
-        </div>
-        <p className={styles.devCredit}>
-          Developed by <strong>GMP Sankalpa</strong> | Final Year Project
-        </p>
       </section>
     </main>
   );

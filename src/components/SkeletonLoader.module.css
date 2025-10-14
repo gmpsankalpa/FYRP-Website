@@ -1,0 +1,263 @@
+/* Base Skeleton Animation */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Skeleton Circle */
+.circle {
+    border-radius: 50%;
+}
+
+/* Skeleton Card */
+.skeletonCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    min-height: 180px;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cardHeaderText {
+    flex: 1;
+}
+
+.cardContent {
+    margin-top: 1rem;
+}
+
+/* Skeleton Grid (Dashboard) */
+.skeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Skeleton Chart */
+.skeletonChart {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+
+.chartBars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+}
+
+.bar {
+    flex: 1;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 224, 102, 0.2) 0%,
+        rgba(255, 224, 102, 0.3) 50%,
+        rgba(255, 224, 102, 0.2) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 4px 4px 0 0;
+}
+
+.bar1 { height: 60%; animation-delay: 0s; }
+.bar2 { height: 80%; animation-delay: 0.2s; }
+.bar3 { height: 45%; animation-delay: 0.4s; }
+.bar4 { height: 90%; animation-delay: 0.6s; }
+.bar5 { height: 70%; animation-delay: 0.8s; }
+
+/* Skeleton Profile */
+.skeletonProfile {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profileInfo {
+    flex: 1;
+}
+
+.profileDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Skeleton Form */
+.skeletonForm {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.formField {
+    margin-bottom: 0;
+}
+
+.formActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Skeleton Table */
+.skeletonTable {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+/* Skeleton Text */
+.skeletonText {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .skeletonGrid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .skeletonCard {
+        padding: 1rem;
+        min-height: 150px;
+    }
+
+    .profileHeader {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .skeletonForm,
+    .skeletonProfile {
+        padding: 1.5rem;
+    }
+
+    .formActions {
+        flex-direction: column;
+    }
+
+    .tableHeader,
+    .tableRow {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .skeletonCard {
+        padding: 0.875rem;
+    }
+
+    .cardHeader {
+        gap: 0.75rem;
+    }
+
+    .skeletonForm,
+    .skeletonProfile {
+        padding: 1rem;
+    }
+
+    .chartBars {
+        gap: 0.5rem;
+    }
+}
+
+/* Accessibility - Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+    .skeleton,
+    .bar {
+        animation: none;
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* Dark Mode Support (Already dark, but can be customized) */
+@media (prefers-color-scheme: light) {
+    .skeleton {
+        background: linear-gradient(
+            90deg,
+            #e0e0e0 0%,
+            #f0f0f0 50%,
+            #e0e0e0 100%
+        );
+    }
+
+    .skeletonCard,
+    .skeletonChart,
+    .skeletonProfile,
+    .skeletonForm,
+    .skeletonTable {
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+    }
+}

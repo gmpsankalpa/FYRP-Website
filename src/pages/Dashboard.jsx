@@ -5,8 +5,14 @@ import { getFirestore, doc, onSnapshot, updateDoc, collection, deleteDoc, getDoc
 import app from '../config/firebase';
 import styles from './Dashboard.module.css';
 import Chart from 'chart.js/auto';
+import usePageTitle from '../hooks/usePageTitle';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { SkeletonDashboard, SkeletonChart } from '../components/SkeletonLoader';
 
 const Dashboard = () => {
+    // Set page title
+    usePageTitle('Dashboard');
+
     const navigate = useNavigate();
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -59,16 +65,18 @@ const Dashboard = () => {
     const [warnings, setWarnings] = useState([]);
     const [notificationCount, setNotificationCount] = useState(0);
     const [showNotificationModal, setShowNotificationModal] = useState(false);
+    const [showResetConfirm, setShowResetConfirm] = useState(false);
     const [lastUpdated, setLastUpdated] = useState(new Date());
     const [systemUptime, setSystemUptime] = useState(0);
     const [startTime] = useState(Date.now());
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     // Debug: Log warnings and notification count changes
-    useEffect(() => {
-        console.log('📊 Warnings state updated:', warnings);
-        console.log('📊 Notification count:', notificationCount);
-    }, [warnings, notificationCount]);
+    // useEffect(() => {
+    //     console.log('📊 Warnings state updated:', warnings);
+    //     console.log('📊 Notification count:', notificationCount);
+    // }, [warnings, notificationCount]);
 
     // Chart References
     const voltageChartRef = useRef(null);
@@ -106,6 +114,17 @@ const Dashboard = () => {
 
         return () => clearInterval(timer);
     }, [startTime]);
+
+    // Initial Loading - Set to false after component mounts
+    useEffect(() => {
+        // Small delay to ensure initial data is loaded
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+            setIsInitialLoad(false);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     // Format Time Helper
     const formatTime = (date) => {
@@ -215,7 +234,7 @@ const Dashboard = () => {
                 }
             }
             
-            console.log('🔔 Combined warnings:', combined);
+            // console.log('🔔 Combined warnings:', combined);
             setWarnings(combined);
             setNotificationCount(combined.length);
         };
@@ -224,7 +243,7 @@ const Dashboard = () => {
         const energyDataDocRef = doc(db, 'energy_data', 'latest');
         const unsubscribeEnergy = onSnapshot(energyDataDocRef, (docSnapshot) => {
             const data = docSnapshot.data();
-            console.log('🔥 Firebase energy data received:', data);
+            // console.log('🔥 Firebase energy data received:', data);
             
             if (data) {
                 const timestamp = formatTime(new Date());
@@ -235,7 +254,7 @@ const Dashboard = () => {
                 
                 // Check for warning in energy data
                 if (data.warning && data.warning.toLowerCase() !== 'normal') {
-                    console.log('⚠️ Warning detected in energy_data:', data.warning);
+                    // console.log('⚠️ Warning detected in energy_data:', data.warning);
                     energyWarning = {
                         id: 'energy-warning-live',
                         message: data.warning,
@@ -263,7 +282,7 @@ const Dashboard = () => {
                 
                 updateCombinedWarnings();
             } else {
-                console.log('❌ No energy data received from Firebase');
+                // console.log('❌ No energy data received from Firebase');
             }
         });
 
@@ -282,11 +301,11 @@ const Dashboard = () => {
         // Listen to warnings collection (separate collection like in original dashboard)
         const warningsCollection = collection(db, 'warnings');
         const unsubscribeWarnings = onSnapshot(warningsCollection, (snapshot) => {
-            console.log('⚠️ Warnings snapshot received, doc count:', snapshot.docs.length);
-            console.log('⚠️ Snapshot empty?', snapshot.empty);
+            // console.log('⚠️ Warnings snapshot received, doc count:', snapshot.docs.length);
+            // console.log('⚠️ Snapshot empty?', snapshot.empty);
             
             if (snapshot.empty) {
-                console.log('⚠️ No warning documents found in collection');
+                // console.log('⚠️ No warning documents found in collection');
                 collectionWarnings = [];
                 updateCombinedWarnings();
                 return;
@@ -294,7 +313,7 @@ const Dashboard = () => {
             
             const warningList = snapshot.docs.map(doc => {
                 const data = doc.data();
-                console.log('📄 Warning doc ID:', doc.id, 'Data:', data);
+                // console.log('📄 Warning doc ID:', doc.id, 'Data:', data);
                 
                 return {
                     id: doc.id,
@@ -324,7 +343,7 @@ const Dashboard = () => {
                 return new Date(b.timestamp) - new Date(a.timestamp);
             });
 
-            console.log('✅ Collection warnings processed:', warningList);
+            // console.log('✅ Collection warnings processed:', warningList);
             collectionWarnings = warningList;
             updateCombinedWarnings();
         }, (error) => {
@@ -600,7 +619,7 @@ const Dashboard = () => {
                 warning: '' 
             });
             
-            console.log('✅ All warnings cleared (collection + energy_data field)');
+            // console.log('✅ All warnings cleared (collection + energy_data field)');
             
             setWarnings([]);
             setNotificationCount(0);
@@ -928,10 +947,10 @@ const Dashboard = () => {
             doc.setFont(undefined, 'normal');
             
             chartData.timestamps.slice(0, 20).forEach((time, i) => {
-                doc.text(time, margin, dataY);
-                doc.text(chartData.voltage[i].toFixed(2), margin + 45, dataY);
-                doc.text(chartData.current[i].toFixed(2), margin + 90, dataY);
-                doc.text(chartData.power[i].toFixed(2), margin + 135, dataY);
+                doc.text(time, margin);
+                doc.text(chartData.voltage[i].toFixed(2), margin + 45);
+                doc.text(chartData.current[i].toFixed(2), margin + 90);
+                doc.text(chartData.power[i].toFixed(2), margin + 135);
                 dataY += 5;
             });
 
@@ -962,18 +981,12 @@ const Dashboard = () => {
     };
 
     // Reset Data Function
-    const handleResetData = async () => {
-        const confirmReset = window.confirm(
-            'Are you sure you want to reset system configuration to default values?\n\n' +
-            'This will reset:\n' +
-            '• Low Voltage Threshold: 220V\n' +
-            '• High Voltage Threshold: 240V\n' +
-            '• Overcurrent Threshold: 10.0A\n' +
-            '• Power Threshold: 2400W\n' +
-            '• Buzzer: Enabled'
-        );
+    const handleResetData = () => {
+        setShowResetConfirm(true);
+    };
 
-        if (!confirmReset) return;
+    const confirmResetData = async () => {
+        setShowResetConfirm(false);
 
         try {
             showToast('Resetting system configuration...');
@@ -1034,6 +1047,37 @@ const Dashboard = () => {
                 </div>
             )}
 
+            {/* Reset Confirmation Modal */}
+            {showResetConfirm && (
+                <div className={`${styles.modal} ${styles.show}`}>
+                    <div className={styles.modalContent}>
+                        <span className={styles.closeBtn} onClick={() => setShowResetConfirm(false)}>&times;</span>
+                        <h2><i className="fas fa-exclamation-triangle"></i> Confirm Reset</h2>
+                        <div className={styles.confirmMessage}>
+                            <p>Are you sure you want to reset system configuration to default values?</p>
+                            <div className={styles.resetDetails}>
+                                <h4>This will reset:</h4>
+                                <ul>
+                                    <li><i className="fas fa-bolt"></i> Low Voltage Threshold: <strong>220V</strong></li>
+                                    <li><i className="fas fa-bolt"></i> High Voltage Threshold: <strong>240V</strong></li>
+                                    <li><i className="fas fa-tachometer-alt"></i> Overcurrent Threshold: <strong>10.0A</strong></li>
+                                    <li><i className="fas fa-plug"></i> Power Threshold: <strong>2400W</strong></li>
+                                    <li><i className="fas fa-bell"></i> Buzzer: <strong>Enabled</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className={styles.confirmActions}>
+                            <button className={styles.cancelBtn} onClick={() => setShowResetConfirm(false)}>
+                                <i className="fas fa-times"></i> Cancel
+                            </button>
+                            <button className={styles.confirmBtn} onClick={confirmResetData}>
+                                <i className="fas fa-check"></i> Yes, Reset Configuration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <main>
                 {/* Dashboard Hero */}
                 <section className={styles.hero}>
@@ -1045,7 +1089,14 @@ const Dashboard = () => {
                     track and optimize energy consumption.</p>
                     </div>
                     <div className={styles.heroImage}>
-                        <img src={require('../assets/logo.png')} alt="Smart Meter Logo" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} onError={e => e.target.style.display = 'none'} />
+                        <img 
+                            src={require('../assets/logo.png')} 
+                            alt="Smart Meter Logo" 
+                            loading="lazy"
+                            decoding="async"
+                            style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} 
+                            onError={e => e.target.style.display = 'none'} 
+                        />
                     </div>
                 </section>
 
@@ -1074,7 +1125,11 @@ const Dashboard = () => {
                 {/* Real-Time Data Section */}
                 <section className={styles.realTimeSection}>
                     <h2>Real-Time Energy Data</h2>
-                    <div className={styles.dataGrid}>
+                    
+                    {isInitialLoad ? (
+                        <SkeletonDashboard />
+                    ) : (
+                        <div className={styles.dataGrid}>
                         <div className={`${styles.dataCard} ${styles.voltageCard}`}>
                             <div className={styles.cardIcon}>
                                 <i className="fas fa-bolt"></i>
@@ -1118,6 +1173,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
+                    )}
 
                     {/* Additional Statistics */}
                     <div className={styles.statsGrid}>
@@ -1198,7 +1254,7 @@ const Dashboard = () => {
                                     <i className={`fas fa-power-off`}></i>
                                     {isLoading ? 'Processing...' : (systemStatus.isOn ? 'Turn OFF' : 'Turn ON')}
                                 </button>
-                                <button className={`${styles.controlBtn} ${styles.secondary}`} onClick={() => navigate('/config')}>
+                                <button className={`${styles.controlBtn} ${styles.secondary}`} onClick={() => navigate('/configure')}>
                                     <i className="fas fa-cog"></i>
                                     Configure
                                 </button>
@@ -1235,6 +1291,14 @@ const Dashboard = () => {
                         </div>
                     </div>
 
+                    {isInitialLoad ? (
+                        <div className={styles.chartsGrid}>
+                            <SkeletonChart height="300px" />
+                            <SkeletonChart height="300px" />
+                            <SkeletonChart height="300px" />
+                            <SkeletonChart height="300px" />
+                        </div>
+                    ) : (
                     <div className={styles.chartsGrid}>
                         {/* Voltage Chart */}
                         <div className={styles.chartContainer}>
@@ -1293,6 +1357,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
+                    )}
                 </section>
 
                 {/* Action Section */}
@@ -1356,22 +1421,13 @@ const Dashboard = () => {
                 </section>
             </main>
 
-            {/* Social Media Section */}
-            <section className={styles.socialModern}>
-			<h2>Connect with the Developer</h2>
-			<div className={styles.socialIcons}>
-				<a href="https://github.com/gmpsankalpa" target="_blank" title="GitHub" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-				<a href="https://linkedin.com/in/gmpsankalpa" target="_blank" title="LinkedIn" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-				<a href="https://twitter.com/gmpsankalpa" target="_blank" title="Twitter" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
-				<a href="https://facebook.com/gmpsankalpa" target="_blank" title="Facebook" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
-			</div>
-			<p className={styles.devCredit}>Developed by <strong>GMP Sankalpa</strong> | Final Year Project</p>
-		</section>
-
             {/* Toast Notification */}
             <div id="toast">
                 <span id="toast-message"></span>
             </div>
+
+            {/* Loading Spinner */}
+            {isLoading && <LoadingSpinner />}
         </div>
     );
 };

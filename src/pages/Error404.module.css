@@ -1,0 +1,390 @@
+/* 404 Error Page Styles - Using Home Page Theme */
+:root {
+    --primary-bg: #0a1026;
+    --secondary-bg: #101a3a;
+    --accent-color: #ffe066;
+    --text-primary: #e6e6e6;
+    --text-secondary: #b8b8b8;
+    --card-bg: #101a3a;
+    --card-shadow: 0 2px 16px #ffe06622;
+    --card-hover-shadow: 0 8px 32px #ffe06655;
+    --border-radius: 16px;
+    --transition: all 0.3s ease;
+}
+
+/* General Styles */
+.hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(120deg, var(--secondary-bg) 60%, var(--accent-color) 120%);
+	padding: clamp(32px, 8vw, 60px) var(--spacing-md) clamp(24px, 6vw, 40px);
+	min-height: clamp(280px, 50vh, 350px);
+	gap: clamp(24px, 5vw, 40px);
+	box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 224, 102, 0.15) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.heroContent {
+	max-width: 500px;
+	color: #fff;
+	padding: 0 var(--spacing-md);
+	flex: 1 1 300px;
+	position: relative;
+	z-index: 10;
+}
+
+.heroContent h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.2;
+    color: #fff;
+}
+
+.highlight {
+    color: var(--accent-color);
+    text-shadow: 0 2px 8px #101a3a44;
+}
+
+.heroDesc {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+    color: var(--accent-color);
+    line-height: 1.6;
+}
+
+.heroActions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ctaBtn {
+    background: #ffe066;
+    color: #101a3a;
+    font-weight: bold;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    box-shadow: 0 2px 8px #101a3a33;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ctaBtn:hover {
+    background: #fff;
+    color: #101a3a;
+    transform: translateY(-2px);
+}
+
+.secondaryBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-weight: bold;
+    padding: 16px 32px;
+    border: 2px solid #ffe066;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.secondaryBtn:hover {
+    background: #ffe066;
+    color: #101a3a;
+    transform: translateY(-2px);
+}
+
+/* Error Visual Animation */
+.heroVisual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    z-index: 10;
+}
+
+.heroNumber {
+    font-size: 6rem;
+    font-weight: 900;
+    color: #ffe066;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.powerOutageAnimation {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    z-index: 1;
+}
+
+.energyWave {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid #ffe066;
+    border-radius: 50%;
+    animation: energyPulse 3s infinite;
+    opacity: 0;
+}
+
+.energyWave:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.energyWave:nth-child(3) {
+    animation-delay: 2s;
+}
+
+@keyframes energyPulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Quick Links Section */
+.quickLinks {
+    margin: 80px auto 0 auto;
+    max-width: 1100px;
+    padding: 0 24px 40px 24px;
+}
+
+.quickLinks h2 {
+    text-align: center;
+    color: #ffe066;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+}
+
+.linksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.linkCard {
+    background: #101a3a;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px #ffe06622;
+    padding: 30px 25px;
+    transition: var(--transition);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: inherit;
+}
+
+.linkCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 32px #ffe06655;
+    text-decoration: none;
+    color: inherit;
+}
+
+.linkIcon {
+    font-size: 2.5rem;
+    color: #ffe066;
+    background: rgba(255, 224, 102, 0.1);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.linkContent h3 {
+    color: #ffe066;
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+}
+
+.linkContent p {
+    color: #e6e6e6;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Energy Tips Section */
+.energyTips {
+    margin: 80px auto 0 auto;
+    max-width: 1100px;
+    padding: 0 24px 60px 24px;
+}
+
+.energyTips h2 {
+    text-align: center;
+    color: #ffe066;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+}
+
+.tipsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.tipCard {
+    background: #101a3a;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px #ffe06622;
+    padding: 30px 25px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.tipCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 32px #ffe06655;
+}
+
+.tipIcon {
+    font-size: 2.5rem;
+    color: #ffe066;
+    margin-bottom: 20px;
+}
+
+.tipCard h3 {
+    color: #ffe066;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.tipCard p {
+    color: #e6e6e6;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero {
+        padding: clamp(2.5rem, 6vw, 4rem) var(--spacing-md);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: clamp(2rem, 5vw, 3rem) var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .heroContent {
+        padding: 0;
+    }
+    
+    .heroVisual {
+        order: -1;
+        margin-bottom: 0;
+    }
+
+    .heroNumber {
+        font-size: 4rem;
+    }
+    
+    
+    .heroActions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .linksGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .linkCard {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .tipsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        min-height: auto;
+        gap: var(--spacing-xs);
+        padding: clamp(1.5rem, 4vw, 2.5rem) var(--spacing-sm);
+    }
+    
+    .heroContent h1 {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .heroDesc {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .quickLinks,
+    .energyTips {
+        padding: 0 15px 30px 15px;
+    }
+}
+
+/* Landscape Orientation Optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+	.hero {
+        min-height: auto;
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .heroContent h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+}

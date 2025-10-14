@@ -1,0 +1,104 @@
+/* Modern CSS Variables for Consistent Design */
+:root {
+	--primary-bg: #0a1026;
+	--secondary-bg: #101a3a;
+	--accent-color: #ffe066;
+	--text-primary: #e6e6e6;
+	--text-secondary: #b8b8b8;
+	--card-bg: #101a3a;
+	--card-shadow: 0 2px 16px #ffe06622;
+	--card-hover-shadow: 0 8px 32px #ffe06655;
+	--border-radius: 16px;
+	--border-radius-lg: 18px;
+	--transition: all 0.3s ease;
+	--android-green: #3ddc84;
+	--ios-blue: #007aff;
+	--unavailable-gray: #6c757d;
+	--spacing-xs: 8px;
+	--spacing-sm: 16px;
+	--spacing-md: 24px;
+	--spacing-lg: 32px;
+	--spacing-xl: 40px;
+}
+
+/* Social Media Section */
+.socialModern {
+    margin: var(--spacing-xl) auto;
+    max-width: 900px;
+    padding: clamp(2rem, 4vw, 3rem) var(--spacing-md);
+    text-align: center;
+}
+
+.socialModern h2 {
+    color: var(--accent-color);
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.socialIcons {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.socialIcons a {
+    width: clamp(3rem, 8vw, 4rem);
+    height: clamp(3rem, 8vw, 4rem);
+    background: var(--card-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    font-size: clamp(1.3rem, 3vw, 1.6rem);
+    transition: var(--transition);
+    box-shadow: var(--card-shadow);
+    text-decoration: none;
+}
+
+.socialIcons a:hover,
+.socialIcons a:focus {
+    background: var(--accent-color);
+    color: var(--primary-bg);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: var(--card-hover-shadow);
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.devCredit {
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    margin-top: var(--spacing-lg);
+}
+
+.devCredit strong {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - OPTIMIZED FOR ALL DEVICES
+   ======================================== */
+
+/* Tablets */
+@media (max-width: 768px) {
+	.socialModern {
+		padding: var(--spacing-md) var(--spacing-sm);
+	}
+}
+
+/* Mobile Devices */
+@media (max-width: 480px) {
+	.socialIcons {
+		gap: var(--spacing-sm);
+		flex-wrap: wrap;
+	}
+	
+	.socialIcons a {
+		width: clamp(40px, 10vw, 48px);
+		height: clamp(40px, 10vw, 48px);
+		font-size: clamp(1.2rem, 3vw, 1.5rem);
+	}
+}
