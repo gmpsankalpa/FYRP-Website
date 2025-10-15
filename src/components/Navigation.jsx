@@ -91,12 +91,13 @@ const Navigation = () => {
         { path: '/login', name: 'Login', icon: 'fas fa-sign-in-alt' },
       ];
 
-  // Quick links for additional pages
+  // Quick links for additional pagesquickLinks
   const quickLinks = [
     { path: '/faq', name: 'FAQ', icon: 'fas fa-question-circle' },
-    { path: '/help-center', name: 'Help Center', icon: 'fas fa-life-ring' },
-    { path: '/changelog', name: 'Change Log', icon: 'fas fa-list-alt' },
-    { path: '/source-code', name: 'Source Code', icon: 'fas fa-code' },
+    { path: '/help', name: 'Help Center', icon: 'fas fa-life-ring' },
+    { path: '/ai-model', name: 'AI Model', icon: 'fas fa-robot' },
+    { path: '/change-log', name: 'Change Log', icon: 'fas fa-list-alt' },
+    { path: '/source', name: 'Source Code', icon: 'fas fa-code' },
   ];
 
   // Close menu when clicking outside or on a link

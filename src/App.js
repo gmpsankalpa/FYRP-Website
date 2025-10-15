@@ -17,6 +17,7 @@ import Configure from './pages/Configure';
 import Profile from './pages/Profile';
 import SourceCode from './pages/SourceCode';
 import ChangeLog from './pages/ChangeLog';
+import AiModel from './pages/AiModel';
 import FAQ from './pages/FAQ';
 import HelpCenter from './pages/HelpCenter';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/source" element={<SourceCode />} />
             <Route path="/change-log" element={<ChangeLog />} />
+            <Route path="/ai-model" element={<AiModel />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/help" element={<HelpCenter />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />

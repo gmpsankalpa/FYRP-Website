@@ -1,0 +1,1198 @@
+/* ========================================
+   AI Model Page Styles - Complete
+   ======================================== */
+
+:root {
+    --primary-bg: #0a1026;
+    --secondary-bg: #101a3a;
+    --accent-color: #ffe066;
+    --text-primary: #e6e6e6;
+    --text-secondary: #b8b8b8;
+    --card-bg: #101a3a;
+    --card-shadow: 0 2px 16px #ffe06622;
+    --card-hover-shadow: 0 8px 32px #ffe06655;
+    --border-radius: 16px;
+    --transition: all 0.3s ease;
+    --success: #3ddc84;
+    --warning: #ffaa33;
+    --error: #ff6b6b;
+}
+
+body {
+	font-family: "Segoe UI", Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: var(--primary-bg);
+	color: var(--text-primary);
+	min-height: 100vh;
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Hero Section */
+.hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(120deg, var(--secondary-bg) 60%, var(--accent-color) 120%);
+	padding: clamp(32px, 8vw, 60px) var(--spacing-md) clamp(24px, 6vw, 40px);
+	min-height: clamp(280px, 50vh, 350px);
+	gap: clamp(24px, 5vw, 40px);
+	box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 224, 102, 0.15) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.heroContent {
+	max-width: 500px;
+	color: #fff;
+	padding: 0 var(--spacing-md);
+	flex: 1 1 300px;
+}
+
+.heroContent h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.2;
+    color: #fff;
+}
+
+.highlight {
+    color: var(--accent-color);
+    text-shadow: 0 2px 8px #101a3a44;
+}
+
+.heroDesc {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+    color: var(--accent-color);
+    line-height: 1.6;
+}
+
+.heroImage {
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heroImage img {
+	width: clamp(120px, 20vw, 180px);
+	height: auto;
+	border-radius: 24px;
+	box-shadow: none;
+	background: none;
+	object-fit: contain;
+	max-width: 100%;
+}
+
+.heroBadges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 224, 102, 0.15);
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-weight: 600;
+    color: var(--accent-color);
+    backdrop-filter: blur(10px);
+}
+
+.badge i {
+    font-size: 1.1rem;
+}
+
+
+/* Content Section */
+.contentSection {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(32px, 6vw, 64px) clamp(16px, 4vw, 32px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(32px, 5vw, 48px);
+}
+
+/* Card Styles */
+.overviewCard,
+.architectureCard,
+.performanceCard,
+.techCard,
+.changelogCard,
+.useCasesCard,
+.ctaCard {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    padding: clamp(24px, 5vw, 40px);
+    border: 1px solid rgba(255, 224, 102, 0.1);
+    transition: var(--transition);
+}
+
+.overviewCard:hover,
+.architectureCard:hover,
+.performanceCard:hover,
+.techCard:hover,
+.changelogCard:hover,
+.useCasesCard:hover,
+.ctaCard:hover {
+    box-shadow: var(--card-hover-shadow);
+    transform: translateY(-2px);
+}
+
+.overviewCard h2,
+.architectureCard h2,
+.performanceCard h2,
+.techCard h2,
+.changelogCard h2,
+.useCasesCard h2,
+.ctaCard h2 {
+    color: var(--accent-color);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(16px, 3vw, 24px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.overviewCard h2 i,
+.architectureCard h2 i,
+.performanceCard h2 i,
+.techCard h2 i,
+.changelogCard h2 i,    
+.useCasesCard h2 i,
+.ctaCard h2 i {
+    background: rgba(255, 224, 102, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+}
+
+.overviewCard p {
+    color: var(--text-primary);
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    line-height: 1.7;
+}
+
+/* Features Grid */
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(20px, 4vw, 32px);
+    margin-top: clamp(16px, 3vw, 24px);
+}
+
+.featureCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 224, 102, 0.15);
+    border-radius: 12px;
+    padding: clamp(20px, 4vw, 32px);
+    transition: var(--transition);
+    text-align: center;
+}
+
+.featureCard:hover {
+    background: rgba(255, 224, 102, 0.05);
+    border-color: var(--accent-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(255, 224, 102, 0.2);
+}
+
+.featureIcon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--accent-color), #ffaa33);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--primary-bg);
+}
+
+.featureCard h3 {
+    color: var(--accent-color);
+    font-size: clamp(1.1rem, 2.3vw, 1.3rem);
+    margin-bottom: 12px;
+}
+
+.featureCard p {
+    color: var(--text-secondary);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    line-height: 1.6;
+}
+
+/* Architecture Grid */
+.architectureGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+    gap: clamp(24px, 4vw, 32px);
+    margin-top: clamp(16px, 3vw, 24px);
+}
+
+.archSection {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 224, 102, 0.15);
+    border-radius: 12px;
+    padding: clamp(20px, 4vw, 28px);
+}
+
+.archSection h3 {
+    color: var(--accent-color);
+    font-size: clamp(1.1rem, 2.3vw, 1.3rem);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.archSubtitle {
+    color: var(--text-secondary);
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    margin-bottom: 16px;
+    font-style: italic;
+}
+
+.archSection ul {
+    list-style: none;
+    padding: 0;
+}
+
+.archSection ul li {
+    color: var(--text-primary);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 224, 102, 0.08);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    line-height: 1.6;
+}
+
+.archSection ul li:last-child {
+    border-bottom: none;
+}
+
+.archSection ul li strong {
+    color: var(--accent-color);
+}
+
+/* Performance Table */
+.performanceTable {
+    overflow-x: auto;
+    margin-top: clamp(16px, 3vw, 24px);
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) rgba(255, 224, 102, 0.1);
+}
+
+.performanceTable::-webkit-scrollbar {
+    height: 8px;
+}
+
+.performanceTable::-webkit-scrollbar-track {
+    background: rgba(255, 224, 102, 0.1);
+    border-radius: 4px;
+}
+
+.performanceTable::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+.performanceTable::-webkit-scrollbar-thumb:hover {
+    background: #ffaa33;
+}
+
+.performanceTable table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+.performanceTable thead {
+    background: rgba(255, 224, 102, 0.1);
+}
+
+.performanceTable th {
+    color: var(--accent-color);
+    padding: 16px;
+    text-align: left;
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.performanceTable td {
+    color: var(--text-primary);
+    padding: 14px 16px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    border-bottom: 1px solid rgba(255, 224, 102, 0.1);
+}
+
+.performanceTable tbody tr:hover {
+    background: rgba(255, 224, 102, 0.05);
+}
+
+.success {
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* Tech Grid */
+.techGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: clamp(16px, 3vw, 20px);
+    margin-top: clamp(16px, 3vw, 24px);
+}
+
+.techBadge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: clamp(16px, 3vw, 20px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 224, 102, 0.2);
+    border-radius: 12px;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.techBadge:hover {
+    background: rgba(255, 224, 102, 0.1);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+.techBadge i {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--accent-color);
+}
+
+.techBadge span {
+    color: var(--text-primary);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 500;
+}
+
+/* Changelog Section */
+.liveIndicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    color: var(--success);
+    margin-left: auto;
+    background: rgba(61, 220, 132, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--success);
+}
+
+.liveIndicator i {
+    animation: pulse 2s ease-in-out infinite;
+    font-size: 0.6rem;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.changelogError {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid var(--error);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--error);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.changelogError i {
+    font-size: 1.2rem;
+}
+
+.loadingState {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+.loadingState i {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 16px;
+    display: block;
+}
+
+.repoStats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr));
+    gap: clamp(12px, 3vw, 16px);
+    margin-bottom: 32px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.stat i {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--accent-color);
+}
+
+.stat span {
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat small {
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    color: var(--text-secondary);
+}
+
+.changelogHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.changelogHeader label {
+    color: var(--text-primary);
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    font-weight: 600;
+}
+
+.refreshButton {
+    background: transparent;
+    border: 1px solid rgba(255, 224, 102, 0.2);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--accent-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+}
+
+.refreshButton:hover:not(:disabled) {
+    background: rgba(255, 224, 102, 0.1);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.refreshButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.refreshButton i {
+    transition: transform 0.3s ease;
+}
+
+.versionSelect {
+    max-width: 400px;
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 224, 102, 0.2);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: clamp(0.95rem, 2.1vw, 1rem);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.versionSelect:hover {
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.versionSelect:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(255, 224, 102, 0.1);
+}
+
+.changelogList {
+    margin-top: 24px;
+}
+
+.changelogVersion h3 {
+    color: var(--accent-color);
+    font-size: clamp(1.3rem, 2.7vw, 1.6rem);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.latestBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, var(--success), #2ecc71);
+    color: #fff;
+    font-size: clamp(0.75rem, 1.7vw, 0.85rem);
+    font-weight: 700;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.changelogDate {
+    color: var(--text-secondary);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 400;
+    margin-left: auto;
+}
+
+.changelogVersion ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.changelogVersion ul li {
+    position: relative;
+    padding: 12px 0 12px 32px;
+    color: var(--text-primary);
+    font-size: clamp(0.95rem, 2.1vw, 1.05rem);
+    line-height: 1.7;
+    border-bottom: 1px solid rgba(255, 224, 102, 0.08);
+}
+
+.changelogVersion ul li:last-child {
+    border-bottom: none;
+}
+
+.changelogVersion ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--accent-color), #ffaa33);
+    color: var(--primary-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.githubLink {
+    margin-top: 20px;
+}
+
+.githubLink a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 224, 102, 0.2);
+    border-radius: 8px;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    transition: var(--transition);
+}
+
+.githubLink a:hover {
+    background: rgba(255, 224, 102, 0.1);
+    border-color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+.githubLink a i {
+    font-size: 1.1rem;
+}
+
+.noData {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 40px;
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+}
+
+.changelogActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+    justify-content: center;
+}
+
+/* Use Cases */
+.useCasesList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(16px, 3vw, 20px);
+    margin-top: clamp(16px, 3vw, 24px);
+}
+
+.useCase {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: clamp(16px, 3vw, 20px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 224, 102, 0.15);
+    border-radius: 12px;
+    transition: var(--transition);
+}
+
+.useCase:hover {
+    background: rgba(255, 224, 102, 0.05);
+    border-color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+.useCase i {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--accent-color);
+    flex-shrink: 0;
+}
+
+.useCase h4 {
+    color: var(--accent-color);
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    margin-bottom: 8px;
+}
+
+.useCase p {
+    color: var(--text-secondary);
+    font-size: clamp(0.9rem, 2vw, 0.95rem);
+    line-height: 1.6;
+}
+
+/* CTA Section */
+.ctaCard {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255, 224, 102, 0.1), rgba(255, 170, 51, 0.05));
+    border: 2px solid var(--accent-color);
+}
+
+.ctaCard p {
+    color: var(--text-primary);
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    margin-bottom: clamp(24px, 4vw, 32px);
+    line-height: 1.6;
+}
+
+.ctaButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+/* Buttons */
+.btnPrimary,
+.btnSecondary,
+.btnLarge,
+.btnLargeSecondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: clamp(0.95rem, 2.1vw, 1rem);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.btnPrimary,
+.btnLarge {
+    background: linear-gradient(135deg, var(--accent-color), #ffaa33);
+    color: var(--primary-bg);
+}
+
+.btnPrimary:hover,
+.btnLarge:hover {
+    background: linear-gradient(135deg, #ffaa33, var(--accent-color));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 224, 102, 0.4);
+}
+
+.btnSecondary,
+.btnLargeSecondary {
+    background: transparent;
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btnSecondary:hover,
+.btnLargeSecondary:hover {
+    background: rgba(255, 224, 102, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 224, 102, 0.2);
+}
+
+.btnLarge,
+.btnLargeSecondary {
+    padding: 16px 32px;
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+}
+
+
+/* Large Tablets & Small Desktops */
+@media (max-width: 1024px) {
+    .hero {
+        padding: clamp(2.5rem, 6vw, 4rem) var(--spacing-md);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: clamp(2rem, 5vw, 3rem) var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .heroContent {
+        padding: 0;
+    }
+    
+    .heroImage {
+        order: -1;
+        margin-bottom: 0;
+    }
+
+    .heroBadges {
+        justify-content: center;
+    }
+
+    .changelogCard h2 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .liveIndicator {
+        margin-left: 0;
+    }
+
+    .commitHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .changelogHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .refreshButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .versionSelect {
+        max-width: 100%;
+    }
+
+    .repoStats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat {
+        padding: 12px;
+    }
+
+    .performanceTable {
+        overflow-x: auto;
+    }
+
+    .performanceTable table {
+        font-size: 0.85rem;
+    }
+
+    .performanceTable th,
+    .performanceTable td {
+        padding: 10px 8px;
+    }
+
+    .techGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .techBadge {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+
+    .changelogActions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btnPrimary,
+    .btnSecondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .useCasesList {
+        gap: 16px;
+    }
+
+    .useCase {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .useCase i {
+        margin-bottom: 8px;
+    }
+
+    .ctaButtons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btnLarge,
+    .btnLargeSecondary {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+    }
+
+    .heroImage {
+        max-width: 200px;
+    }
+
+    .heroImage img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .contentSection {
+        padding: clamp(24px, 5vw, 40px) clamp(12px, 3vw, 16px);
+    }
+
+    .hero {
+        min-height: auto;
+        gap: var(--spacing-xs);
+        padding: clamp(1.5rem, 4vw, 2.5rem) var(--spacing-sm);
+    }
+    
+    .heroContent h1 {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .heroDesc {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+
+    .overviewCard h2,
+    .architectureCard h2,
+    .performanceCard h2,
+    .techCard h2,
+    .changelogCard h2,
+    .useCasesCard h2,
+    .ctaCard h2 {
+        font-size: 1.3rem;
+    }
+
+    .overviewCard p,
+    .ctaCard p {
+        font-size: 0.95rem;
+    }
+
+    .featureCard h3,
+    .useCase h4 {
+        font-size: 1rem;
+    }
+
+    .featureCard p,
+    .useCase p {
+        font-size: 0.85rem;
+    }
+
+    .archSection h3 {
+        font-size: 1.1rem;
+    }
+
+    .archSection ul li {
+        font-size: 0.85rem;
+    }
+
+    .performanceTable {
+        font-size: 0.8rem;
+    }
+
+    .performanceTable th,
+    .performanceTable td {
+        padding: 8px 6px;
+    }
+
+    .techGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .techBadge {
+        font-size: 0.9rem;
+    }
+
+    .repoStats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat {
+        padding: 10px;
+    }
+
+    .stat span {
+        font-size: 1.2rem;
+    }
+
+    .stat small {
+        font-size: 0.75rem;
+    }
+
+    .changelogVersion h3 {
+        font-size: 1.1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .latestBadge,
+    .changelogDate {
+        margin-left: 0;
+    }
+
+    .changelogVersion ul li {
+        font-size: 0.85rem;
+        padding-left: 20px;
+    }
+
+    .changelogVersion ul li::before {
+        font-size: 0.7rem;
+        left: 0;
+    }
+
+    .githubLink a {
+        font-size: 0.85rem;
+        padding: 8px 14px;
+    }
+
+    .btnPrimary,
+    .btnSecondary,
+    .btnLarge,
+    .btnLargeSecondary {
+        font-size: 0.9rem;
+        padding: 12px 20px;
+    }
+
+    .featuresGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .architectureGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline {
+        padding-left: 20px;
+    }
+
+    .timeline::before {
+        left: 5px;
+    }
+
+    .timelineDot {
+        left: -21px;
+        width: 10px;
+        height: 10px;
+    }
+}
+
+@media (max-width: 360px) {
+    .heroContent h1 {
+        font-size: 1.5rem;
+    }
+
+    .heroDesc {
+        font-size: 0.85rem;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 5px 8px;
+    }
+
+    .repoStats {
+        grid-template-columns: 1fr;
+    }
+
+    .performanceTable th,
+    .performanceTable td {
+        padding: 6px 4px;
+        font-size: 0.75rem;
+    }
+
+    .featureIcon i,
+    .useCase > i {
+        font-size: 1.5rem;
+    }
+
+    .overviewCard h2,
+    .architectureCard h2,
+    .performanceCard h2,
+    .techCard h2,
+    .changelogCard h2,
+    .useCasesCard h2,
+    .ctaCard h2 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger tap targets for touch devices */
+    .refreshButton {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .versionSelect {
+        min-height: 44px;
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+
+    .btnPrimary,
+    .btnSecondary,
+    .btnLarge,
+    .btnLargeSecondary {
+        min-height: 44px;
+    }
+
+    /* Remove hover effects on touch devices */
+    .featureCard:hover,
+    .overviewCard:hover,
+    .architectureCard:hover,
+    .performanceCard:hover,
+    .techCard:hover,
+    .changelogCard:hover,
+    .useCasesCard:hover,
+    .ctaCard:hover {
+        transform: none;
+    }
+
+    /* Add active states for better touch feedback */
+    .refreshButton:active {
+        transform: scale(0.95);
+    }
+
+    .btnPrimary:active,
+    .btnSecondary:active,
+    .btnLarge:active,
+    .btnLargeSecondary:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Smooth scrolling for modern browsers */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Landscape Orientation Optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+	.hero {
+        min-height: auto;
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .heroContent h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+}

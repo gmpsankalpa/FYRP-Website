@@ -723,19 +723,26 @@
 
 	/* Hide quick links section on desktop */
 	.navLinks li:has(a[href="/faq"]),
-	.navLinks li:has(a[href="/help-center"]),
-	.navLinks li:has(a[href="/changelog"]),
-	.navLinks li:has(a[href="/source-code"]) {
+	.navLinks li:has(a[href="/help"]),
+	.navLinks li:has(a[href="/ai-model"]),
+	.navLinks li:has(a[href="/change-log"]),
+	.navLinks li:has(a[href="/source"]) {
 		display: none;
 	}
 
 	/* Hide divider before quick links on desktop */
 	.navDivider:first-of-type {
+		display: none !important;
+	}
+
+	/* Hide ALL dividers by default on desktop */
+	.navDivider {
 		display: none;
 	}
 
-	/* Desktop logout button styling */
-	.navDivider {
+	/* Show ONLY the divider that comes right before user info (when logged in) */
+	.navDivider:has(+ .navUserInfo) {
+		display: block !important;
 		height: 24px;
 		width: 1px;
 		background: rgba(255, 224, 102, 0.2);

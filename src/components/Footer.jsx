@@ -41,6 +41,7 @@ const Footer = () => {
 						<h4>Resources</h4>
 						<ul className={styles.footerLinks}>
 							<li><Link to="/source">Source Code</Link></li>
+							<li><Link to="/ai-model">AI Model</Link></li>
 							<li><Link to="/change-log">Change Log</Link></li>
 							<li><Link to="/help">Help Center</Link></li>
 							<li><Link to="/privacy">Privacy Policy</Link></li>
