@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import styles from './ServerStatus.module.css';
 import usePageTitle from '../hooks/usePageTitle';
+import { SkeletonCard } from '../components/SkeletonLoader';
 
 const ServerStatus = () => {
     usePageTitle('Server Status');
@@ -12,6 +13,7 @@ const ServerStatus = () => {
     const [allOperational, setAllOperational] = useState(true);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     // Fetch Vercel deployment status
     const fetchVercelStatus = async () => {
@@ -175,10 +177,16 @@ const ServerStatus = () => {
             ]);
 
             setLoading(false);
+            
+            // Set initial load to false after short delay
+            setTimeout(() => {
+                setIsInitialLoad(false);
+            }, 800);
         } catch (err) {
             console.error('Error fetching service statuses:', err);
             setError('Unable to fetch service statuses. Please check your internet connection.');
             setLoading(false);
+            setIsInitialLoad(false);
         }
     }, []); // Empty dependency array since all functions are defined in component scope
 
@@ -235,7 +243,19 @@ const ServerStatus = () => {
             )}
 
             {/* Loading State */}
-            {loading ? (
+            {isInitialLoad ? (
+                <div className={styles.contentWrapper}>
+                    <SkeletonCard />
+                    <div className={styles.servicesList}>
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                    </div>
+                    <SkeletonCard />
+                    <SkeletonCard />
+                </div>
+            ) : loading ? (
                 <div className={styles.loadingContainer}>
                     <div className={styles.spinner}></div>
                     <p>Loading service status...</p>

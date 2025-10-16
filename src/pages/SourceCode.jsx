@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './SourceCode.module.css';
 import usePageTitle from '../hooks/usePageTitle';
+import { SkeletonCard } from '../components/SkeletonLoader';
 
 const SourceCode = () => {
 	// Set page title
 	usePageTitle('Source Code');
+	
+	const [isInitialLoad, setIsInitialLoad] = useState(true);
 
 	useEffect(() => {
 		// Load Font Awesome
@@ -13,8 +16,15 @@ const SourceCode = () => {
 		faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
 		faLink.crossOrigin = 'anonymous';
 		document.head.appendChild(faLink);
+		
+		// Set initial load to false after a short delay
+		const timer = setTimeout(() => {
+			setIsInitialLoad(false);
+		}, 800);
+		
 		return () => {
 			document.head.removeChild(faLink);
+			clearTimeout(timer);
 		};
 	}, []);
 
@@ -25,7 +35,7 @@ const SourceCode = () => {
 			description: 'Android mobile application for real-time energy monitoring, analytics, and remote control of the Smart Energy Meter system.',
 			icon: 'fa-mobile-alt',
 			color: '#3ddc84',
-			techStack: ['Java', 'Android Studio', 'Firebase', 'Material Design'],
+			techStack: ['Flutter', 'Android Studio', 'Firebase', 'Material Design'],
 			features: [
 				'Real-time energy monitoring',
 				'Push notifications for alerts',
@@ -35,7 +45,7 @@ const SourceCode = () => {
 			githubUrl: 'https://github.com/gmpsankalpa/smart_energy_meter',
 			stats: {
 				language: 'Java',
-				size: '~25 MB'
+				size: '~50 MB'
 			}
 		},
 		{
@@ -125,6 +135,14 @@ const SourceCode = () => {
 					Explore each repository to understand the complete architecture.
 				</p>
 
+				{isInitialLoad ? (
+					<div className={styles.reposGrid}>
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+					</div>
+				) : (
 				<div className={styles.reposGrid}>
 					{repositories.map((repo) => (
 						<div key={repo.id} className={styles.repoCard}>
@@ -184,6 +202,7 @@ const SourceCode = () => {
 						</div>
 					))}
 				</div>
+				)}
 			</section>
 
 			{/* Getting Started Section */}

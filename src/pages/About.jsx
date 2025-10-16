@@ -409,7 +409,7 @@ const About = () => {
               integration to create a comprehensive energy monitoring solution.
             </p>
             <div className={styles.developerContact}>
-              <p><strong>Email:</strong> gmpsankalpa@gmail.com</p>
+              <p><strong>Email:</strong> 19ict036@seu.ac.lk</p>
               <p><strong>GitHub:</strong> github.com/gmpsankalpa</p>
               <p><strong>LinkedIn:</strong> linkedin.com/in/gmpsankalpa</p>
             </div>

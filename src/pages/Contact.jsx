@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './Contact.module.css';
 import usePageTitle from '../hooks/usePageTitle';
+import { SkeletonForm, SkeletonCard } from '../components/SkeletonLoader';
 
 const Contact = () => {
   // Set page title
@@ -8,6 +9,7 @@ const Contact = () => {
 
   const [formStatus, setFormStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     // Load Font Awesome
@@ -16,8 +18,15 @@ const Contact = () => {
     faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
     faLink.crossOrigin = 'anonymous';
     document.head.appendChild(faLink);
+    
+    // Set initial load to false after a short delay
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 800);
+    
     return () => {
       document.head.removeChild(faLink);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -81,6 +90,11 @@ const Contact = () => {
         <div className={styles.contactGrid}>
           {/* Contact Form */}
           <div className={styles.contactFormSection}>
+            {isInitialLoad ? (
+              <div className={styles.contactCard}>
+                <SkeletonForm fields={5} />
+              </div>
+            ) : (
             <div className={styles.contactCard}>
               <h2>
                 <i className="fas fa-paper-plane"></i> Send us a Message
@@ -175,10 +189,18 @@ const Contact = () => {
                 )}
               </form>
             </div>
+            )}
           </div>
 
           {/* Contact Information */}
           <div className={styles.contactInfoSection}>
+            {isInitialLoad ? (
+              <>
+                <SkeletonCard />
+                <SkeletonCard />
+              </>
+            ) : (
+              <>
             <div className={styles.infoCard}>
               <h2>
                 <i className="fas fa-info-circle"></i> Contact Information
@@ -190,7 +212,7 @@ const Contact = () => {
                 </div>
                 <div className={styles.contactDetails}>
                   <h3>Email Us</h3>
-                  <p>malithapiumal02@gmail.com</p>
+                  <p>19ict036@seu.ac.lk</p>
                   <span>We'll respond within 24 hours</span>
                 </div>
               </div>
@@ -212,8 +234,9 @@ const Contact = () => {
                 </div>
                 <div className={styles.contactDetails}>
                   <h3>Visit Us</h3>
-                  <p>South Eastern University of Sri Lanka</p>
-                  <span>University Park, Oluvil #32360</span>
+                  <p>South Eastern University of Sri Lanka,</p>
+                  <span>University Park, Oluvil #32360,</span><br />
+                  <span>Sri Lanka.</span>
                 </div>
               </div>
 
@@ -247,12 +270,14 @@ const Contact = () => {
                   <i className="fas fa-cogs"></i>
                   <span>Configuration Guide</span>
                 </a>
-                <a href="https://github.com/gmpsankalpa/smart_energy_meter" target="_blank" rel="noopener noreferrer" className={styles.supportLink}>
+                <a href="https://github.com/gmpsankalpa/" target="_blank" rel="noopener noreferrer" className={styles.supportLink}>
                   <i className="fab fa-github"></i>
                   <span>GitHub Repository</span>
                 </a>
               </div>
             </div>
+            </>
+            )}
           </div>
         </div>
       </section>

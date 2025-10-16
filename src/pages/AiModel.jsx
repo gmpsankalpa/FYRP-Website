@@ -1,110 +1,100 @@
 import { useEffect, useState } from 'react';
 import styles from './AiModel.module.css';
 import usePageTitle from '../hooks/usePageTitle';
+import { SkeletonCard } from '../components/SkeletonLoader';
 
 const AiModel = () => {
     // Set page title
     usePageTitle('AI Model - Theft Detection');
 
-    const [repoData, setRepoData] = useState(null);
     const [selectedVersion, setSelectedVersion] = useState('');
-    const [releases, setReleases] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [changelogs, setChangelogs] = useState({});
+    const [isLoadingChangelogs, setIsLoadingChangelogs] = useState(true);
     const [changelogError, setChangelogError] = useState(null);
-    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-    // Fetch repository data and releases from GitHub API
-    const fetchGitHubData = async (isRefresh = false) => {
+    // Fetch GitHub releases function
+    const fetchGitHubReleases = async () => {
         try {
-            if (isRefresh) {
-                setIsRefreshing(true);
-            } else {
-                setLoading(true);
-            }
+            setIsLoadingChangelogs(true);
             setChangelogError(null);
-                const repoResponse = await fetch('https://api.github.com/repos/gmpsankalpa/FYRP-AI-Model');
-                const repoJson = await repoResponse.json();
-                setRepoData(repoJson);
+            const response = await fetch('https://api.github.com/repos/gmpsankalpa/FYRP-AI-Model/releases');
 
-                // Fetch releases
-                const releasesResponse = await fetch('https://api.github.com/repos/gmpsankalpa/FYRP-AI-Model/releases');
-                const releasesJson = await releasesResponse.json();
-                
-                if (releasesJson && releasesJson.length > 0) {
-                    const releasesData = {};
-                    releasesJson.forEach(release => {
-                        const version = release.tag_name;
-                        const date = new Date(release.published_at).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                        });
-                        
-                        // Parse release notes into bullet points
-                        const body = release.body || '';
-                        const changes = body
-                            .split('\n')
-                            .filter(line => line.trim().startsWith('-') || line.trim().startsWith('*'))
-                            .map(line => line.replace(/^[-*]\s*/, '').trim())
-                            .filter(line => line.length > 0);
-                        
-                        releasesData[version] = {
-                            date,
-                            changes: changes.length > 0 ? changes : ['Release notes not available']
-                        };
-                    });
-                    
-                    setReleases(releasesData);
-                    setSelectedVersion(Object.keys(releasesData)[0] || '');
-                } else {
-                    // Fallback data
-                    const fallbackReleases = {
-                        'v1.0.0': {
-                            date: 'Mar 11, 2024',
-                            changes: [
-                                'Initial release of Energy Theft Detection AI Model',
-                                'Binary classification with 95%+ accuracy',
-                                'Deep neural network with BatchNormalization',
-                                'Hyperparameter optimization using Keras Tuner',
-                                'Trained on 200K+ synthetic samples',
-                                'Google Colab integration for interactive testing'
-                            ]
-                        }
-                    };
-                    setReleases(fallbackReleases);
-                    setSelectedVersion('v1.0.0');
+            if (!response.ok) {
+                // Handle specific GitHub API responses
+                if (response.status === 403) {
+                    // Rate limit or forbidden
+                    const reset = response.headers.get('X-RateLimit-Reset');
+                    let msg = 'Rate limit exceeded when accessing GitHub API. Please try again later.';
+                    if (reset) {
+                        const resetTime = new Date(parseInt(reset, 10) * 1000);
+                        msg = `GitHub rate limit reached. Try again after ${resetTime.toLocaleTimeString()}.`;
+                    }
+                    setChangelogs({});
+                    setChangelogError(msg);
+                    setIsLoadingChangelogs(false);
+                    return;
                 }
 
-                setLoading(false);
-                setIsRefreshing(false);
-            } catch (error) {
-                console.error('Error fetching GitHub data:', error);
-                setChangelogError('Failed to load releases from GitHub. Showing fallback data.');
-                
-                // Fallback data on error
-                const fallbackReleases = {
-                    'v1.0.0': {
-                        date: 'Mar 11, 2024',
-                        changes: [
-                            'Initial release of Energy Theft Detection AI Model',
-                            'Binary classification with 95%+ accuracy',
-                            'Deep neural network with BatchNormalization',
-                            'Hyperparameter optimization using Keras Tuner',
-                            'Trained on 200K+ synthetic samples',
-                            'Google Colab integration for interactive testing'
-                        ]
-                    }
-                };
-                setReleases(fallbackReleases);
-                setSelectedVersion('v1.0.0');
-                setLoading(false);
-                setIsRefreshing(false);
+                if (response.status === 404) {
+                    setChangelogs({});
+                    setChangelogError('Repository not found on GitHub.');
+                    setIsLoadingChangelogs(false);
+                    return;
+                }
+
+                throw new Error(`Failed to fetch releases (status ${response.status})`);
             }
-        };
-    
-    // Initial load
+
+            const releases = await response.json();
+
+            // No APK logic needed for AI Model changelog
+
+            // Transform GitHub releases to changelog format
+            const transformedChangelogs = {};
+            releases.forEach(release => {
+                const version = release.tag_name;
+                const date = new Date(release.published_at).toISOString().split('T')[0];
+
+                // Parse release notes into changes array
+                const changes = release.body
+                    ? release.body
+                        .split('\n')
+                        .filter(line => line.trim().startsWith('-') || line.trim().startsWith('*'))
+                        .map(line => line.replace(/^[-*]\s*/, '').trim())
+                        .filter(line => line.length > 0)
+                    : ['Release notes not available'];
+
+                transformedChangelogs[version] = {
+                    date,
+                    changes: changes.length > 0 ? changes : ['No changes documented']
+                };
+            });
+
+            // If no releases found, show empty state (no fallback data)
+            if (Object.keys(transformedChangelogs).length === 0) {
+                setChangelogs({});
+                setChangelogError('No releases found for this repository.');
+            } else {
+                setChangelogs(transformedChangelogs);
+                // Set the latest version as selected
+                if (releases.length > 0) {
+                    setSelectedVersion(releases[0].tag_name);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching GitHub releases:', error?.message || error);
+            setChangelogs({});
+            setChangelogError('Unable to fetch latest releases. Please check your connection and try again.');
+        } finally {
+            setIsLoadingChangelogs(false);
+        }
+    };
+
+    // Fetch GitHub releases on mount
     useEffect(() => {
-        fetchGitHubData();
+        fetchGitHubReleases();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Load Font Awesome
@@ -113,9 +103,17 @@ const AiModel = () => {
         faLink.rel = 'stylesheet';
         faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
         faLink.crossOrigin = 'anonymous';
-        if (!document.querySelector(`link[href="${faLink.href}"]`)) {
-            document.head.appendChild(faLink);
-        }
+        document.head.appendChild(faLink);
+
+        // Set initial load to false after a short delay
+        const timer = setTimeout(() => {
+            setIsInitialLoad(false);
+        }, 800);
+
+        return () => {
+            document.head.removeChild(faLink);
+            clearTimeout(timer);
+        };
     }, []);
 
     return (
@@ -158,13 +156,30 @@ const AiModel = () => {
             {/* Main Content */}
             <section className={styles.contentSection}>
                 {/* Overview */}
+                {isInitialLoad ? (
+                    <>
+                        <SkeletonCard />
+                        <div className={styles.featuresGrid}>
+                            <SkeletonCard />
+                            <SkeletonCard />
+                            <SkeletonCard />
+                            <SkeletonCard />
+                            <SkeletonCard />
+                            <SkeletonCard />
+                        </div>
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                    </>
+                ) : (
+                    <>
                 <div className={styles.overviewCard}>
                     <h2>
                         <i className="fas fa-brain"></i> What This AI Model Does
                     </h2>
                     <p>
-                        The Energy Theft Detection AI Model is an advanced machine learning solution designed specifically for detecting electricity theft in smart energy monitoring systems. 
-                        It works in conjunction with IoT-based smart energy meters to provide real-time fraud detection, analyzing consumption patterns with over 95% accuracy. 
+                        The Energy Theft Detection AI Model is an advanced machine learning solution designed specifically for detecting electricity theft in smart energy monitoring systems.
+                        It works in conjunction with IoT-based smart energy meters to provide real-time fraud detection, analyzing consumption patterns with over 95% accuracy.
                         The model identifies anomalies and suspicious activities that indicate meter tampering or unauthorized energy usage, helping utilities prevent revenue loss and ensure fair billing for all consumers.
                     </p>
                 </div>
@@ -323,133 +338,108 @@ const AiModel = () => {
                     </div>
                 </div>
 
-                {/* Model Changelog - Auto-updating from GitHub */}
-                <div className={styles.changelogCard}>
-                    <h2>
-                        <i className="fas fa-history"></i> Model Changelog
-                        <span className={styles.liveIndicator}>
-                            <i className="fas fa-circle"></i> Live Updates
-                        </span>
-                    </h2>
-
+                {/* Ai Model Change Log Section */}
+                <section className={styles.changelogSection}>
+                    <h2>Ai Model Change Log</h2>
                     {changelogError && (
-                        <div className={styles.changelogError}>
-                            <i className="fas fa-exclamation-triangle"></i>
+                        <div className={styles.changelogError} role="status" aria-live="polite">
+                            <i className="fas fa-exclamation-triangle" aria-hidden="true"></i>
                             <span>{changelogError}</span>
                         </div>
                     )}
-
-                    {loading ? (
-                        <div className={styles.loadingState}>
+                    {isLoadingChangelogs ? (
+                        <div className={styles.changelogLoading}>
                             <i className="fas fa-spinner fa-spin"></i>
                             <p>Loading releases from GitHub...</p>
                         </div>
                     ) : (
                         <>
-                            {repoData && (
-                                <div className={styles.repoStats}>
-                                    <div className={styles.stat}>
-                                        <i className="fas fa-star"></i>
-                                        <span>{repoData.stargazers_count}</span>
-                                        <small>Stars</small>
-                                    </div>
-                                    <div className={styles.stat}>
-                                        <i className="fas fa-code-branch"></i>
-                                        <span>{repoData.forks_count}</span>
-                                        <small>Forks</small>
-                                    </div>
-                                    <div className={styles.stat}>
-                                        <i className="fas fa-eye"></i>
-                                        <span>{repoData.watchers_count}</span>
-                                        <small>Watchers</small>
-                                    </div>
-                                    <div className={styles.stat}>
-                                        <i className="fas fa-exclamation-circle"></i>
-                                        <span>{repoData.open_issues_count}</span>
-                                        <small>Issues</small>
+                            {Object.keys(changelogs).length === 0 ? (
+                                <div className={styles.changelogEmpty}>
+                                    <i className="fas fa-ban" style={{ fontSize: '1.6rem' }}></i>
+                                    <h3>No releases found</h3>
+                                    <p>We couldn't find any releases for this repository.</p>
+                                    <div className={styles.changelogEmptyActions}>
+                                        <button
+                                            className={styles.refreshButton}
+                                            type="button"
+                                            aria-label="Retry fetching releases"
+                                            onClick={fetchGitHubReleases}
+                                            disabled={isLoadingChangelogs}
+                                            title="Retry fetching releases"
+                                        >
+                                            <i className={`fas fa-sync-alt ${isLoadingChangelogs ? 'fa-spin' : ''}`}></i>
+                                            <span style={{ marginLeft: 8 }}>Retry</span>
+                                        </button>
+                                        <a
+                                            href="https://github.com/gmpsankalpa/FYRP-AI-Model/releases"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.btnSecondary}
+                                        >
+                                            View on GitHub
+                                        </a>
                                     </div>
                                 </div>
-                            )}
-
-                            <div className={styles.changelogHeader}>
-                                <label htmlFor="model-version-select">Select Version:</label>
-                                <button 
-                                    className={styles.refreshButton}
-                                    onClick={() => fetchGitHubData(true)}
-                                    disabled={isRefreshing}
-                                    title="Refresh releases"
-                                >
-                                    <i className={`fas fa-sync-alt ${isRefreshing ? 'fa-spin' : ''}`}></i>
-                                </button>
-                            </div>
-
-                            <select 
-                                id="model-version-select" 
-                                value={selectedVersion}
-                                onChange={(e) => setSelectedVersion(e.target.value)}
-                                className={styles.versionSelect}
-                            >
-                                {Object.keys(releases).map(version => (
-                                    <option key={version} value={version}>
-                                        {version} ({releases[version].date})
-                                    </option>
-                                ))}
-                            </select>
-
-                            <div className={styles.changelogList}>
-                                {releases[selectedVersion] && (
-                                    <div className={styles.changelogVersion}>
-                                        <h3>
-                                            {selectedVersion}
-                                            {selectedVersion === Object.keys(releases)[0] && (
-                                                <span className={styles.latestBadge}>Latest</span>
-                                            )}
-                                            <span className={styles.changelogDate}>
-                                                {releases[selectedVersion].date}
-                                            </span>
-                                        </h3>
-                                        <ul>
-                                            {releases[selectedVersion].changes.map((change, index) => (
-                                                <li key={index}>{change}</li>
-                                            ))}
-                                        </ul>
-                                        <div className={styles.githubLink}>
-                                            <a 
-                                                href={`https://github.com/gmpsankalpa/FYRP-AI-Model/releases/tag/${selectedVersion}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <i className="fab fa-github"></i>
-                                                View Release on GitHub
-                                            </a>
-                                        </div>
+                            ) : (
+                                <>
+                                    <div className={styles.changelogHeader}>
+                                        <label htmlFor="changelog-version-select">Select Version:</label>
+                                        <button
+                                            className={styles.refreshButton}
+                                            onClick={fetchGitHubReleases}
+                                            title="Refresh releases"
+                                            disabled={isLoadingChangelogs}
+                                        >
+                                            <i className={`fas fa-sync-alt ${isLoadingChangelogs ? 'fa-spin' : ''}`}></i>
+                                        </button>
                                     </div>
-                                )}
-                            </div>
+                                    <select
+                                        id="changelog-version-select"
+                                        value={selectedVersion}
+                                        onChange={(e) => setSelectedVersion(e.target.value)}
+                                    >
+                                        {Object.keys(changelogs).map(version => (
+                                            <option key={version} value={version}>
+                                                {version} ({changelogs[version].date})
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className={styles.changelogList}>
+                                        {changelogs[selectedVersion] && (
+                                            <div className={styles.changelogVersion}>
+                                                <h3>
+                                                    {selectedVersion}
+                                                    {selectedVersion === Object.keys(changelogs)[0] && (
+                                                        <span className={styles.latestBadge}>Latest</span>
+                                                    )}
+                                                    <span className={styles.changelogDate}>
+                                                        {changelogs[selectedVersion].date}
+                                                    </span>
+                                                </h3>
+                                                <ul>
+                                                    {changelogs[selectedVersion].changes.map((change, index) => (
+                                                        <li key={index}>{change}</li>
+                                                    ))}
+                                                </ul>
+                                                <div className={styles.githubLink}>
+                                                    <a
+                                                        href={`https://github.com/gmpsankalpa/FYRP-AI-Model/releases/tag/${selectedVersion}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <i className="fab fa-github"></i>
+                                                        View on GitHub
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
-
-                    <div className={styles.changelogActions}>
-                        <a
-                            href="https://github.com/gmpsankalpa/FYRP-AI-Model/releases"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.btnPrimary}
-                        >
-                            <i className="fab fa-github"></i>
-                            View All Releases
-                        </a>
-                        <a
-                            href="https://github.com/gmpsankalpa/FYRP-AI-Model/commits/main"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.btnSecondary}
-                        >
-                            <i className="fas fa-list"></i>
-                            View All Commits
-                        </a>
-                    </div>
-                </div>
+                </section>
 
                 {/* Use Cases */}
                 <div className={styles.useCasesCard}>
@@ -508,7 +498,7 @@ const AiModel = () => {
                         <i className="fas fa-rocket"></i> Get Started with the AI Model
                     </h2>
                     <p>
-                        Explore the Energy Theft Detection AI Model source code on GitHub or try it live on Google Colab. 
+                        Explore the Energy Theft Detection AI Model source code on GitHub or try it live on Google Colab.
                         Contribute to the project, report issues, or integrate it into your smart energy monitoring system.
                     </p>
                     <div className={styles.ctaButtons}>
@@ -532,6 +522,8 @@ const AiModel = () => {
                         </a>
                     </div>
                 </div>
+                </>
+                )}
             </section>
         </main>
     );

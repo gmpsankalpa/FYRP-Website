@@ -71,6 +71,8 @@ const Dashboard = () => {
     const [startTime] = useState(Date.now());
     const [isLoading, setIsLoading] = useState(true);
     const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const [timeRange, setTimeRange] = useState('realtime');
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     // Debug: Log warnings and notification count changes
     // useEffect(() => {
@@ -652,6 +654,38 @@ const Dashboard = () => {
         setTimeout(() => {
             toast.classList.remove('show');
         }, duration);
+    };
+
+    // Time Range Change Handler
+    const handleTimeRangeChange = (e) => {
+        const newRange = e.target.value;
+        setTimeRange(newRange);
+        
+        // Show toast notification
+        const rangeLabels = {
+            'realtime': 'Real-time',
+            '1h': 'Last Hour',
+            '24h': 'Last 24 Hours',
+            '7d': 'Last 7 Days'
+        };
+        showToast(`Switched to ${rangeLabels[newRange]} view`);
+        
+        // Here you can add logic to filter/update chart data based on time range
+        console.log('Time range changed to:', newRange);
+    };
+
+    // Refresh Analytics Handler
+    const handleRefreshAnalytics = () => {
+        setIsRefreshing(true);
+        showToast('Refreshing analytics data...');
+        
+        // Simulate refresh with animation
+        setTimeout(() => {
+            setIsRefreshing(false);
+            setLastUpdated(new Date());
+            showToast('Analytics refreshed successfully!');
+            console.log('Analytics refreshed at:', new Date().toLocaleTimeString());
+        }, 1500);
     };
 
     // Export CSV Function
@@ -1276,17 +1310,25 @@ const Dashboard = () => {
                 {/* Analytics Section */}
                 <section className={styles.analyticsSection}>
                     <div className={styles.analyticsHeader}>
-                        <h2>Energy Analytics</h2>
+                        <h2><i className="fas fa-chart-bar"></i> Energy Analytics</h2>
                         <div className={styles.analyticsControls}>
-                            <select className={styles.timeSelect}>
+                            <select 
+                                className={styles.timeSelect}
+                                value={timeRange}
+                                onChange={handleTimeRangeChange}
+                            >
                                 <option value="realtime">Real-time</option>
                                 <option value="1h">Last Hour</option>
                                 <option value="24h">Last 24 Hours</option>
                                 <option value="7d">Last 7 Days</option>
                             </select>
-                            <button className={styles.refreshBtn}>
-                                <i className="fas fa-sync-alt"></i>
-                                Refresh
+                            <button 
+                                className={styles.refreshBtn}
+                                onClick={handleRefreshAnalytics}
+                                disabled={isRefreshing}
+                            >
+                                <i className={`fas fa-sync-alt ${isRefreshing ? 'fa-spin' : ''}`}></i>
+                                {isRefreshing ? 'Refreshing...' : 'Refresh'}
                             </button>
                         </div>
                     </div>

@@ -408,278 +408,295 @@ body {
     font-weight: 500;
 }
 
-/* Changelog Section */
-.liveIndicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-    color: var(--success);
-    margin-left: auto;
-    background: rgba(61, 220, 132, 0.1);
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--success);
+/* ========================================
+   Changelog Section
+   ======================================== */
+.changelogSection {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    padding: clamp(24px, 5vw, 40px);
+    border: 1px solid rgba(255, 224, 102, 0.1);
+    transition: var(--transition);
+    color: var(--text-primary);
+    /* Remove max-width and margin to match other cards */
 }
 
-.liveIndicator i {
-    animation: pulse 2s ease-in-out infinite;
-    font-size: 0.6rem;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-.changelogError {
-    background: rgba(255, 107, 107, 0.1);
-    border: 1px solid var(--error);
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
+.changelogSection h2 {
+    color: var(--accent-color);
+    font-size: var(--font-size-2xl);
+    margin-bottom: clamp(16px, 3vw, 24px);
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--error);
-    font-size: clamp(0.9rem, 2vw, 1rem);
 }
+/* Match card hover effect */
 
-.changelogError i {
-    font-size: 1.2rem;
-}
-
-.loadingState {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-secondary);
-}
-
-.loadingState i {
-    font-size: 3rem;
-    color: var(--accent-color);
-    margin-bottom: 16px;
-    display: block;
-}
-
-.repoStats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr));
-    gap: clamp(12px, 3vw, 16px);
-    margin-bottom: 32px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-}
-
-.stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-}
-
-.stat i {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    color: var(--accent-color);
-}
-
-.stat span {
-    font-size: clamp(1.3rem, 3vw, 1.8rem);
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.stat small {
-    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-    color: var(--text-secondary);
-}
-
-.changelogHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-}
-
-.changelogHeader label {
-    color: var(--text-primary);
-    font-size: clamp(1rem, 2.2vw, 1.1rem);
-    font-weight: 600;
-}
-
-.refreshButton {
-    background: transparent;
-    border: 1px solid rgba(255, 224, 102, 0.2);
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: var(--accent-color);
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    height: 40px;
-}
-
-.refreshButton:hover:not(:disabled) {
-    background: rgba(255, 224, 102, 0.1);
-    border-color: var(--accent-color);
+.changelogSection:hover {
+    box-shadow: var(--card-hover-shadow);
     transform: translateY(-2px);
 }
 
-.refreshButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.changelogSection label {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+    display: block;
 }
 
-.refreshButton i {
-    transition: transform 0.3s ease;
-}
-
-.versionSelect {
-    max-width: 400px;
+.changelogSection select {
     width: 100%;
-    padding: 12px 16px;
-    margin-bottom: 24px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 224, 102, 0.2);
+    max-width: 300px;
+    margin-bottom: var(--spacing-md);
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
     border-radius: 8px;
+    border: 1px solid var(--accent-color);
+    background: var(--secondary-bg);
     color: var(--text-primary);
-    font-size: clamp(0.95rem, 2.1vw, 1rem);
+    font-size: var(--font-size-base);
     cursor: pointer;
-    transition: var(--transition);
-}
-
-.versionSelect:hover {
-    border-color: var(--accent-color);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.versionSelect:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(255, 224, 102, 0.1);
+    min-height: 44px;
 }
 
 .changelogList {
-    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.changelogVersion {
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 8px #ffe06611;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border-left: 5px solid var(--accent-color);
+    transition: box-shadow 0.2s;
+}
+
+.changelogVersion:hover {
+    box-shadow: var(--card-hover-shadow);
 }
 
 .changelogVersion h3 {
     color: var(--accent-color);
-    font-size: clamp(1.3rem, 2.7vw, 1.6rem);
-    margin-bottom: 20px;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-sm);
     flex-wrap: wrap;
 }
 
 .latestBadge {
     display: inline-flex;
     align-items: center;
-    padding: 4px 12px;
-    background: linear-gradient(135deg, var(--success), #2ecc71);
-    color: #fff;
-    font-size: clamp(0.75rem, 1.7vw, 0.85rem);
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, var(--accent-color), #ffd700);
+    color: var(--primary-bg);
+    font-size: clamp(0.7rem, 1.5vw, 0.85rem);
     font-weight: 700;
-    border-radius: 12px;
+    border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 224, 102, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(255, 224, 102, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(255, 224, 102, 0.6);
+    }
 }
 
 .changelogDate {
     color: var(--text-secondary);
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    font-weight: 400;
-    margin-left: auto;
+    font-size: var(--font-size-sm);
+    font-weight: normal;
 }
 
 .changelogVersion ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 24px 0;
+    margin-left: var(--spacing-md);
+    margin-bottom: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    list-style: disc inside;
+    padding-left: 0;
 }
 
-.changelogVersion ul li {
-    position: relative;
-    padding: 12px 0 12px 32px;
-    color: var(--text-primary);
-    font-size: clamp(0.95rem, 2.1vw, 1.05rem);
-    line-height: 1.7;
-    border-bottom: 1px solid rgba(255, 224, 102, 0.08);
+.changelogVersion li {
+    margin-bottom: 4px;
+    line-height: 1.6;
 }
 
-.changelogVersion ul li:last-child {
-    border-bottom: none;
-}
-
-.changelogVersion ul li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 12px;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, var(--accent-color), #ffaa33);
-    color: var(--primary-bg);
-    border-radius: 50%;
+/* Changelog Loading State */
+.changelogLoading {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.85rem;
+    padding: var(--spacing-xl);
+    color: var(--text-secondary);
+    gap: var(--spacing-sm);
 }
 
+.changelogLoading i {
+    font-size: 2rem;
+    color: var(--accent-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.changelogLoading p {
+    font-size: var(--font-size-base);
+    margin: 0;
+}
+
+/* Changelog Error State */
+.changelogError {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+    border-radius: 8px;
+    margin-bottom: var(--spacing-md);
+    color: #ffc107;
+    font-size: var(--font-size-sm);
+}
+
+.changelogError i {
+    font-size: 1.2rem;
+}
+
+/* Changelog Header with Refresh Button */
+.changelogHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    gap: var(--spacing-sm);
+}
+
+.changelogHeader label {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.refreshButton {
+    background: var(--accent-color);
+    color: var(--primary-bg);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    min-height: 44px;
+}
+
+.refreshButton:hover {
+    background: #ffd700;
+    transform: scale(1.05);
+}
+
+.refreshButton:active {
+    transform: scale(0.95);
+}
+
+.refreshButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.refreshButton:disabled:hover {
+    background: var(--accent-color);
+    transform: none;
+}
+
+.refreshButton i {
+    font-size: 1rem;
+}
+
+/* Empty state for changelog when no releases are found */
+.changelogEmpty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.changelogEmpty h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-lg);
+}
+
+.changelogEmpty p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.changelogEmptyActions {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    width: 100%;
+}
+
+.changelogEmptyActions .refreshButton {
+    flex: 0 0 auto;
+}
+
+.changelogEmptyActions .btnSecondary {
+    background: transparent;
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 224, 102, 0.15);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+}
+
+
+/* GitHub Link */
 .githubLink {
-    margin-top: 20px;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(255, 224, 102, 0.2);
 }
 
 .githubLink a {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 224, 102, 0.2);
-    border-radius: 8px;
+    gap: 0.5rem;
     color: var(--accent-color);
     text-decoration: none;
-    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-size: var(--font-size-base);
     transition: var(--transition);
 }
 
 .githubLink a:hover {
-    background: rgba(255, 224, 102, 0.1);
-    border-color: var(--accent-color);
-    transform: translateX(5px);
+    color: #ffd700;
+    transform: translateX(4px);
 }
 
-.githubLink a i {
-    font-size: 1.1rem;
-}
-
-.noData {
-    text-align: center;
-    color: var(--text-secondary);
-    padding: 40px;
-    font-size: clamp(1rem, 2.2vw, 1.1rem);
-}
-
-.changelogActions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 32px;
-    justify-content: center;
+.githubLink i {
+    font-size: 1.2rem;
 }
 
 /* Use Cases */
@@ -963,10 +980,27 @@ body {
     .architectureCard h2,
     .performanceCard h2,
     .techCard h2,
-    .changelogCard h2,
     .useCasesCard h2,
     .ctaCard h2 {
         font-size: 1.3rem;
+    }
+
+    .changelogSection {
+        margin: var(--spacing-lg) var(--spacing-sm);
+        padding: var(--spacing-md);
+    }
+
+    .changelogSection select {
+        max-width: 100%;
+    }
+    .changelogEmpty {
+        align-items: center;
+        text-align: center;
+    }
+    .changelogEmptyActions {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: center;
     }
 
     .overviewCard p,
@@ -1024,33 +1058,6 @@ body {
 
     .stat small {
         font-size: 0.75rem;
-    }
-
-    .changelogVersion h3 {
-        font-size: 1.1rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .latestBadge,
-    .changelogDate {
-        margin-left: 0;
-    }
-
-    .changelogVersion ul li {
-        font-size: 0.85rem;
-        padding-left: 20px;
-    }
-
-    .changelogVersion ul li::before {
-        font-size: 0.7rem;
-        left: 0;
-    }
-
-    .githubLink a {
-        font-size: 0.85rem;
-        padding: 8px 14px;
     }
 
     .btnPrimary,
@@ -1117,7 +1124,6 @@ body {
     .architectureCard h2,
     .performanceCard h2,
     .techCard h2,
-    .changelogCard h2,
     .useCasesCard h2,
     .ctaCard h2 {
         font-size: 1.2rem;

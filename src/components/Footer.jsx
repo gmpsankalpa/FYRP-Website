@@ -53,9 +53,9 @@ const Footer = () => {
 					<div className={styles.footerColumn}>
 						<h4>Contact</h4>
 						<ul className={styles.footerLinks}>
-							<li><i className="fas fa-envelope"></i><a href="mailto:gmpsankalpa@gmail.com"> gmpsankalpa@gmail.com</a></li>
+							<li><i className="fas fa-envelope"></i><a href="mailto:19ict036@seu.ac.lk"> 19ict036@seu.ac.lk</a></li>
 							<li><i className="fas fa-phone"></i><a href="tel:+94711887202"> +94 71 188 7202</a></li>
-							<li><i className="fas fa-map-marker-alt"></i><a href="http://oluvil-sri-lanka.com"> Oluvil, Sri Lanka</a></li>
+							<li><i className="fas fa-map-marker-alt"></i><a href="https://maps.app.goo.gl/kSG5bm1pjEYFGibC8"> South Eastern University of Sri Lanka, <br /> University Park, Oluvil #32360, <br /> Sri Lanka.</a></li>
 						</ul>
 					</div>
 				</div>

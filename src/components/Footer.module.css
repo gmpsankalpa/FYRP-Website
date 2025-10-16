@@ -252,7 +252,19 @@
         width: 16px;
         transition: transform 0.3s ease;
         display: inline-block;
+        vertical-align: top;
     }
+/* Contact address block icon positioning */
+.footerContactAddress {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+.footerContactAddress i {
+    margin-top: 2px;
+    font-size: 1.1em;
+    color: #ffe066;
+}
     
     .footerLinks li:hover i {
         transform: scale(1.2) rotate(10deg);
