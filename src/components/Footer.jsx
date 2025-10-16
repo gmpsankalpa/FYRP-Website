@@ -44,6 +44,7 @@ const Footer = () => {
 							<li><Link to="/ai-model">AI Model</Link></li>
 							<li><Link to="/change-log">Change Log</Link></li>
 							<li><Link to="/help">Help Center</Link></li>
+							<li><Link to="/status">System Status</Link></li>
 							<li><Link to="/privacy">Privacy Policy</Link></li>
 							<li><Link to="/terms">Terms of Service</Link></li>
 						</ul>
