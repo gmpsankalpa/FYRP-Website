@@ -124,7 +124,7 @@ const AiModel = () => {
             <section className={styles.hero}>
                 <div className={styles.heroContent}>
                     <h1>
-                        <span className={styles.highlight}>Energy Theft Detection</span>
+                        <span className={styles.highlight}>Energy</span> Theft Detection
                         <br />
                         <span className={styles.highlight}>AI</span> Model
                     </h1>

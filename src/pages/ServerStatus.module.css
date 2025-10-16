@@ -1,0 +1,580 @@
+/* Modern CSS Variables for Consistent Design */
+:root {
+	--primary-bg: #0a1026;
+	--secondary-bg: #101a3a;
+	--accent-color: #ffe066;
+	--text-primary: #e6e6e6;
+	--text-secondary: #b8b8b8;
+	--card-bg: #101a3a;
+	--card-shadow: 0 2px 16px #ffe06622;
+	--card-hover-shadow: 0 8px 32px #ffe06655;
+	--border-radius: 16px;
+	--border-radius-lg: 18px;
+	--transition: all 0.3s ease;
+	--android-green: #3ddc84;
+	--ios-blue: #007aff;
+	--unavailable-gray: #6c757d;
+	--spacing-xs: 8px;
+	--spacing-sm: 16px;
+	--spacing-md: 24px;
+	--spacing-lg: 32px;
+	--spacing-xl: 40px;
+}
+
+/* Global Optimizations */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Segoe UI", Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: var(--primary-bg);
+	color: var(--text-primary);
+	min-height: 100vh;
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Hero Section */
+.hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(120deg, var(--secondary-bg) 60%, var(--accent-color) 120%);
+	padding: clamp(32px, 8vw, 60px) var(--spacing-md) clamp(24px, 6vw, 40px);
+	min-height: clamp(280px, 50vh, 350px);
+	gap: clamp(24px, 5vw, 40px);
+	box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 224, 102, 0.15) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.heroContent {
+	max-width: 500px;
+	color: #fff;
+	padding: 0 var(--spacing-md);
+	flex: 1 1 300px;
+}
+
+.heroContent h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.2;
+    color: #fff;
+}
+
+.highlight {
+    color: var(--accent-color);
+    text-shadow: 0 2px 8px #101a3a44;
+}
+
+.heroDesc {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+    color: var(--accent-color);
+    line-height: 1.6;
+}
+
+.heroImage {
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heroImage img {
+	width: clamp(120px, 20vw, 180px);
+	height: auto;
+	border-radius: 24px;
+	box-shadow: none;
+	background: none;
+	object-fit: contain;
+	max-width: 100%;
+}
+/* ========================================
+   RESPONSIVE DESIGN - OPTIMIZED FOR ALL DEVICES
+   ======================================== */
+
+/* Large Tablets & Small Desktops */
+@media (max-width: 1024px) {
+    .hero {
+        padding: clamp(2.5rem, 6vw, 4rem) var(--spacing-md);
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+	.hero {
+        flex-direction: column;
+        text-align: center;
+        padding: clamp(2rem, 5vw, 3rem) var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .heroContent {
+        padding: 0;
+    }
+    
+    .heroImage {
+        order: -1;
+        margin-bottom: 0;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 480px) {
+	.hero {
+        min-height: auto;
+        gap: var(--spacing-xs);
+        padding: clamp(1.5rem, 4vw, 2.5rem) var(--spacing-sm);
+    }
+    
+    .heroContent h1 {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .heroDesc {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+}
+
+/* Extra Small Devices */
+@media (max-width: 360px) {
+
+}
+
+/* Landscape Orientation Optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+	.hero {
+        min-height: auto;
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .heroContent h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+}
+
+/* ========================================
+   STATUS PAGE SECTIONS
+   ======================================== */
+
+.statusPage {
+    background: var(--primary-bg);
+    min-height: 100vh;
+}
+
+/* Status Banner */
+.banner {
+    background: #43b581;
+    color: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1rem 0;
+    margin: 2rem auto;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.bannerWarning {
+    background: #faa61a;
+    color: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1rem 0;
+    margin: 2rem auto;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.errorBanner {
+    background: #f04747;
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.8rem 0;
+    margin: 1rem auto;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: var(--card-shadow);
+}
+
+.refreshBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    position: absolute;
+    right: 1rem;
+}
+
+.refreshBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Loading State */
+.loadingContainer {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-primary);
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 224, 102, 0.2);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Uptime Section */
+.uptimeSection {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.uptimeTitle {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.servicesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.serviceRow {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(255, 224, 102, 0.1);
+    padding-bottom: 0.8rem;
+}
+
+.serviceName {
+    width: 180px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.uptimeBar {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    height: 20px;
+    align-items: center;
+}
+
+.uptimeDot {
+    width: 6px;
+    height: 18px;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.serviceStatus {
+    width: 130px;
+    text-align: right;
+    color: #43b581;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.statusIndicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #43b581;
+    display: inline-block;
+    box-shadow: 0 0 8px #43b581;
+}
+
+/* Metrics Section */
+.metricsSection {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.metricsSection h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.metricTabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metricTabs button {
+    background: rgba(255, 224, 102, 0.1);
+    border: 1px solid rgba(255, 224, 102, 0.2);
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.metricTabs button:hover {
+    background: rgba(255, 224, 102, 0.15);
+    border-color: var(--accent-color);
+}
+
+.activeTab {
+    background: var(--accent-color) !important;
+    color: var(--primary-bg) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.metricChart {
+    background: rgba(255, 224, 102, 0.05);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.metricLabel {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.metricValue {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Incidents Section */
+.incidentsSection {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.incidentsSection h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.incidentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.incidentRow {
+    border-bottom: 1px solid rgba(255, 224, 102, 0.1);
+    padding-bottom: 1rem;
+}
+
+.incidentDate {
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+}
+
+.incidentStatus {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.incidentDetails {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.incidentDetail {
+    margin-bottom: 0.4rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.incidentTypeResolved {
+    color: #43b581;
+    font-weight: bold;
+}
+
+.incidentTypeMonitoring {
+    color: #faa61a;
+    font-weight: bold;
+}
+
+.incidentTypeInvestigating {
+    color: #f04747;
+    font-weight: bold;
+}
+
+.incidentTime {
+    color: #888;
+    font-size: 0.9em;
+    margin-left: 0.5em;
+}
+
+/* Footer */
+.statusFooter {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    padding: 2rem 0;
+    margin-top: 2rem;
+}
+
+.statusFooter p {
+    margin: 0;
+}
+
+/* ========================================
+   RESPONSIVE - STATUS SECTIONS
+   ======================================== */
+
+@media (max-width: 900px) {
+    .uptimeSection, .metricsSection, .incidentsSection {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .banner, .bannerWarning {
+        width: 95%;
+    }
+}
+
+@media (max-width: 600px) {
+    .serviceName, .serviceStatus {
+        width: 100px;
+        font-size: 0.9em;
+    }
+    
+    .uptimeBar {
+        gap: 1px;
+    }
+    
+    .uptimeDot {
+        width: 4px;
+        height: 16px;
+    }
+    
+    .metricValue {
+        font-size: 1.2em;
+        right: 1rem;
+        top: 1rem;
+    }
+    
+    .metricTabs button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9em;
+    }
+    
+    .uptimeSection, .metricsSection, .incidentsSection {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .serviceRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .serviceName {
+        width: 100%;
+    }
+    
+    .uptimeBar {
+        width: 100%;
+    }
+    
+    .serviceStatus {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}

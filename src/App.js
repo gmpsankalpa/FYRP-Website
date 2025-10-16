@@ -19,6 +19,7 @@ import SourceCode from './pages/SourceCode';
 import ChangeLog from './pages/ChangeLog';
 import AiModel from './pages/AiModel';
 import FAQ from './pages/FAQ';
+import Status from './pages/ServerStatus';
 import HelpCenter from './pages/HelpCenter';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
@@ -43,6 +44,7 @@ function App() {
             <Route path="/change-log" element={<ChangeLog />} />
             <Route path="/ai-model" element={<AiModel />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/status" element={<Status />} />
             <Route path="/help" element={<HelpCenter />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />

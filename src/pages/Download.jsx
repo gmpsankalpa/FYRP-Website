@@ -7,7 +7,7 @@ const Download = () => {
   // Set page title
   usePageTitle('Download');
 
-  const [selectedVersion, setSelectedVersion] = useState('v1.5.2');
+  const [selectedVersion, setSelectedVersion] = useState('');
   const [activeFaq, setActiveFaq] = useState(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [changelogs, setChangelogs] = useState({});
@@ -23,7 +23,31 @@ const Download = () => {
       const response = await fetch('https://api.github.com/repos/gmpsankalpa/smart_energy_meter/releases');
       
       if (!response.ok) {
-        throw new Error('Failed to fetch releases');
+        // Handle specific GitHub API responses
+        if (response.status === 403) {
+          // Rate limit or forbidden
+          const reset = response.headers.get('X-RateLimit-Reset');
+          let msg = 'Rate limit exceeded when accessing GitHub API. Please try again later.';
+          if (reset) {
+            const resetTime = new Date(parseInt(reset, 10) * 1000);
+            msg = `GitHub rate limit reached. Try again after ${resetTime.toLocaleTimeString()}.`;
+          }
+          setChangelogs({});
+          setLatestRelease(null);
+          setChangelogError(msg);
+          setIsLoadingChangelogs(false);
+          return;
+        }
+
+        if (response.status === 404) {
+          setChangelogs({});
+          setLatestRelease(null);
+          setChangelogError('Repository not found on GitHub.');
+          setIsLoadingChangelogs(false);
+          return;
+        }
+
+        throw new Error(`Failed to fetch releases (status ${response.status})`);
       }
       
       const releases = await response.json();
@@ -67,36 +91,23 @@ const Download = () => {
         };
       });
       
-      // If no releases found, use fallback data
+      // If no releases found, show empty state (no fallback data)
       if (Object.keys(transformedChangelogs).length === 0) {
-        setChangelogs(getFallbackChangelogs());
-        setLatestRelease({
-          version: '1.5.2',
-          tagName: 'v1.5.2',
-          date: 'Sep 30, 2025',
-          downloadUrl: '/assets/app/app-release.apk',
-          size: '25 MB'
-        });
+        setChangelogs({});
+        setLatestRelease(null);
+        setChangelogError('No releases found for this repository.');
       } else {
         setChangelogs(transformedChangelogs);
         // Set the latest version as selected
         if (releases.length > 0) {
           setSelectedVersion(releases[0].tag_name);
         }
-      }
-      
-      setChangelogError(null);
+  }
     } catch (error) {
-      console.error('Error fetching GitHub releases:', error);
-      setChangelogError('Unable to fetch latest releases. Showing cached data.');
-      setChangelogs(getFallbackChangelogs());
-      setLatestRelease({
-        version: '1.5.2',
-        tagName: 'v1.5.2',
-        date: 'Sep 30, 2025',
-        downloadUrl: '/assets/app/app-release.apk',
-        size: '25 MB'
-      });
+      console.error('Error fetching GitHub releases:', error?.message || error);
+      setChangelogs({});
+      setLatestRelease(null);
+      setChangelogError('Unable to fetch latest releases. Please check your connection and try again.');
     } finally {
       setIsLoadingChangelogs(false);
     }
@@ -107,44 +118,6 @@ const Download = () => {
     fetchGitHubReleases();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Fallback changelog data
-  const getFallbackChangelogs = () => ({
-    'v1.5.2': {
-      date: '2025-09-30',
-      changes: [
-        'Enhanced real-time monitoring with improved accuracy',
-        'Added support for multiple devices',
-        'Improved notification system',
-        'Bug fixes and performance improvements'
-      ]
-    },
-    'v1.5.1': {
-      date: '2025-09-29',
-      changes: [
-        'Fixed critical security vulnerability',
-        'Improved battery optimization',
-        'Enhanced UI/UX design',
-        'Minor bug fixes'
-      ]
-    },
-    'v1.4.1': {
-      date: '2025-03-17',
-      changes: [
-        'Added dark mode support',
-        'Improved data synchronization',
-        'Performance enhancements'
-      ]
-    },
-    'v1.0.0': {
-      date: '2024-03-11',
-      changes: [
-        'Initial release',
-        'Basic energy monitoring features',
-        'Real-time alerts'
-      ]
-    }
-  });
 
   useEffect(() => {
     // Load Font Awesome
@@ -277,14 +250,21 @@ const Download = () => {
             </div>
             
             <div className={styles.cardFooter}>
-              <a 
-                href={latestRelease?.downloadUrl || '/assets/app/app-release.apk'} 
-                className={`${styles.downloadButton} ${styles.androidBtn}`} 
-                download
-              >
-                <i className="fas fa-download"></i>
-                <span>Download APK</span>
-              </a>
+              {latestRelease ? (
+                <a 
+                  href={latestRelease.downloadUrl} 
+                  className={`${styles.downloadButton} ${styles.androidBtn}`} 
+                  download
+                >
+                  <i className="fas fa-download"></i>
+                  <span>Download APK</span>
+                </a>
+              ) : (
+                <button className={`${styles.downloadButton} ${styles.androidBtn} ${styles.disabled}`} disabled>
+                  <i className="fas fa-download"></i>
+                  <span>Download APK</span>
+                </button>
+              )}
               <p className={styles.securityNote}>
                 <i className="fas fa-shield-alt"></i>
                 Safe & Secure Download
@@ -473,8 +453,8 @@ const Download = () => {
         <h2>App Change Log</h2>
         
         {changelogError && (
-          <div className={styles.changelogError}>
-            <i className="fas fa-exclamation-triangle"></i>
+          <div className={styles.changelogError} role="status" aria-live="polite">
+            <i className="fas fa-exclamation-triangle" aria-hidden="true"></i>
             <span>{changelogError}</span>
           </div>
         )}
@@ -486,60 +466,92 @@ const Download = () => {
           </div>
         ) : (
           <>
-            <div className={styles.changelogHeader}>
-              <label htmlFor="changelog-version-select">Select Version:</label>
-              <button 
-                className={styles.refreshButton}
-                onClick={fetchGitHubReleases}
-                title="Refresh releases"
-                disabled={isLoadingChangelogs}
-              >
-                <i className={`fas fa-sync-alt ${isLoadingChangelogs ? 'fa-spin' : ''}`}></i>
-              </button>
-            </div>
-            
-            <select 
-              id="changelog-version-select" 
-              value={selectedVersion}
-              onChange={(e) => setSelectedVersion(e.target.value)}
-            >
-              {Object.keys(changelogs).map(version => (
-                <option key={version} value={version}>
-                  {version} ({changelogs[version].date})
-                </option>
-              ))}
-            </select>
-            
-            <div className={styles.changelogList}>
-              {changelogs[selectedVersion] && (
-                <div className={styles.changelogVersion}>
-                  <h3>
-                    {selectedVersion}
-                    {selectedVersion === Object.keys(changelogs)[0] && (
-                      <span className={styles.latestBadge}>Latest</span>
-                    )}
-                    <span className={styles.changelogDate}>
-                      {changelogs[selectedVersion].date}
-                    </span>
-                  </h3>
-                  <ul>
-                    {changelogs[selectedVersion].changes.map((change, index) => (
-                      <li key={index}>{change}</li>
-                    ))}
-                  </ul>
-                  <div className={styles.githubLink}>
-                    <a 
-                      href={`https://github.com/gmpsankalpa/smart_energy_meter/releases/tag/${selectedVersion}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="fab fa-github"></i>
-                      View on GitHub
-                    </a>
-                  </div>
+            {/* If there are no changelogs, show friendly empty state with retry */}
+            {Object.keys(changelogs).length === 0 ? (
+              <div className={styles.changelogEmpty}>
+                <i className="fas fa-ban" style={{ fontSize: '1.6rem' }}></i>
+                <h3>No releases found</h3>
+                <p>We couldn't find any releases for this repository.</p>
+                <div className={styles.changelogEmptyActions}>
+                  <button
+                    className={styles.refreshButton}
+                    type="button"
+                    aria-label="Retry fetching releases"
+                    onClick={fetchGitHubReleases}
+                    disabled={isLoadingChangelogs}
+                    title="Retry fetching releases"
+                  >
+                    <i className={`fas fa-sync-alt ${isLoadingChangelogs ? 'fa-spin' : ''}`}></i>
+                    <span style={{ marginLeft: 8 }}>Retry</span>
+                  </button>
+                  <a
+                    href="https://github.com/gmpsankalpa/smart_energy_meter/releases"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.btnSecondary}
+                  >
+                    View on GitHub
+                  </a>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <>
+                <div className={styles.changelogHeader}>
+                  <label htmlFor="changelog-version-select">Select Version:</label>
+                  <button 
+                    className={styles.refreshButton}
+                    onClick={fetchGitHubReleases}
+                    title="Refresh releases"
+                    disabled={isLoadingChangelogs}
+                  >
+                    <i className={`fas fa-sync-alt ${isLoadingChangelogs ? 'fa-spin' : ''}`}></i>
+                  </button>
+                </div>
+
+                <select 
+                  id="changelog-version-select" 
+                  value={selectedVersion}
+                  onChange={(e) => setSelectedVersion(e.target.value)}
+                >
+                  {Object.keys(changelogs).map(version => (
+                    <option key={version} value={version}>
+                      {version} ({changelogs[version].date})
+                    </option>
+                  ))}
+                </select>
+
+                <div className={styles.changelogList}>
+                  {changelogs[selectedVersion] && (
+                    <div className={styles.changelogVersion}>
+                      <h3>
+                        {selectedVersion}
+                        {selectedVersion === Object.keys(changelogs)[0] && (
+                          <span className={styles.latestBadge}>Latest</span>
+                        )}
+                        <span className={styles.changelogDate}>
+                          {changelogs[selectedVersion].date}
+                        </span>
+                      </h3>
+                      <ul>
+                        {changelogs[selectedVersion].changes.map((change, index) => (
+                          <li key={index}>{change}</li>
+                        ))}
+                      </ul>
+                      <div className={styles.githubLink}>
+                        <a 
+                          href={`https://github.com/gmpsankalpa/smart_energy_meter/releases/tag/${selectedVersion}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <i className="fab fa-github"></i>
+                          View on GitHub
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </>
         )}
       </section>

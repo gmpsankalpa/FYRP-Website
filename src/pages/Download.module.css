@@ -964,6 +964,47 @@ body {
     font-size: 1rem;
 }
 
+/* Empty state for changelog when no releases are found */
+.changelogEmpty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.changelogEmpty h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-lg);
+}
+
+.changelogEmpty p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.changelogEmptyActions {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    width: 100%;
+}
+
+.changelogEmptyActions .refreshButton {
+    flex: 0 0 auto;
+}
+
+.changelogEmptyActions .btnSecondary {
+    background: transparent;
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 224, 102, 0.15);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+}
+
+
 /* GitHub Link */
 .githubLink {
     margin-top: var(--spacing-md);
@@ -1189,6 +1230,15 @@ body {
     
     .changelogSection select {
         max-width: 100%;
+    }
+    .changelogEmpty {
+        align-items: center;
+        text-align: center;
+    }
+    .changelogEmptyActions {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: center;
     }
 }
 
