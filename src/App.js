@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { Analytics } from "@vercel/analytics/react"
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -31,6 +32,7 @@ function App() {
       <OfflineIndicator />
       <AuthProvider>
         <Router>
+        <Analytics />
         <Navigation />
         <main>
           <Routes>
