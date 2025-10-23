@@ -169,7 +169,7 @@ const Home = () => {
 		<section className={styles.videoModern}>
 			<h2>See It In Action</h2>
 			<div className={styles.videoContainer}>
-				<iframe width="560" height="315" src="https://www.youtube.com/embed/tspb05mH19I" title="Smart Energy Meter Demo Video" frameBorder="0" allowFullScreen></iframe>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/VTPbjdgpVcI?si=l60nxH6xADQ57dA1&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 			</div>
 		</section>
 
